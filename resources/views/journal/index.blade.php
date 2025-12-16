@@ -1,0 +1,145 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-bold text-2xl text-slate-800 leading-tight flex items-center gap-2">
+            <span class="text-3xl">📓</span> {{ __('My Journal') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12 bg-slate-50 min-h-screen">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+            
+            <!-- Success Message -->
+            @if(session('success'))
+                <div class="bg-teal-100 border border-teal-200 text-teal-800 px-4 py-3 rounded-xl flex items-center gap-2 shadow-sm" role="alert">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="font-medium">{{ session('success') }}</span>
+                </div>
+            @endif
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column: Write New Entry -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl shadow-lg shadow-slate-200/50 p-6 border border-slate-100 sticky top-24">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">
+                            <span>✏️</span> New Entry
+                        </h3>
+                        
+                        <form action="{{ route('journal.store') }}" method="POST" class="space-y-4">
+                            @csrf
+                            
+                            <div>
+                                <label for="title" class="block text-sm font-medium text-slate-600 mb-1">Title / Topic</label>
+                                <input type="text" name="title" id="title" required placeholder="Daily Reflection..." class="w-full rounded-xl border-slate-200 focus:border-teal-500 focus:ring-teal-500 transition-colors text-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-600 mb-2">How are you feeling?</label>
+                                <div class="flex flex-wrap gap-2">
+                                    @php
+                                        $moods = [
+                                            ['value' => 'happy', 'emoji' => '😄', 'label' => 'Happy', 'active' => 'peer-checked:bg-yellow-400 peer-checked:text-white peer-checked:border-yellow-500 peer-checked:shadow-lg peer-checked:shadow-yellow-200'],
+                                            ['value' => 'calm', 'emoji' => '😌', 'label' => 'Calm', 'active' => 'peer-checked:bg-blue-400 peer-checked:text-white peer-checked:border-blue-500 peer-checked:shadow-lg peer-checked:shadow-blue-200'],
+                                            ['value' => 'neutral', 'emoji' => '😐', 'label' => 'Neutral', 'active' => 'peer-checked:bg-slate-400 peer-checked:text-white peer-checked:border-slate-500 peer-checked:shadow-lg peer-checked:shadow-slate-200'],
+                                            ['value' => 'sad', 'emoji' => '😢', 'label' => 'Sad', 'active' => 'peer-checked:bg-purple-400 peer-checked:text-white peer-checked:border-purple-500 peer-checked:shadow-lg peer-checked:shadow-purple-200'],
+                                            ['value' => 'angry', 'emoji' => '😠', 'label' => 'Angry', 'active' => 'peer-checked:bg-red-400 peer-checked:text-white peer-checked:border-red-500 peer-checked:shadow-lg peer-checked:shadow-red-200'],
+                                        ];
+                                    @endphp
+                                    @foreach($moods as $mood)
+                                        <label class="cursor-pointer group relative flex-1 min-w-[3rem]">
+                                            <input type="radio" name="mood" value="{{ $mood['value'] }}" class="peer sr-only" 
+                                                onclick="this.getAttribute('data-checked') === 'true' ? (this.checked = false, this.setAttribute('data-checked', 'false')) : (document.querySelectorAll('input[name=\'mood\']').forEach(el => el.setAttribute('data-checked', 'false')), this.setAttribute('data-checked', 'true'))"
+                                            required>
+                                            
+                                            <!-- Button Container -->
+                                            <div class="h-14 w-full rounded-2xl border-2 border-slate-100 flex items-center justify-center text-3xl bg-white hover:bg-slate-50 transition-all duration-200 transform hover:-translate-y-1 hover:shadow-md {{ $mood['active'] }}">
+                                                <span class="filter drop-shadow-sm">{{ $mood['emoji'] }}</span>
+                                            </div>
+
+                                            <span class="block text-center text-[10px] text-slate-400 mt-1 font-medium group-hover:text-teal-600 transition-colors capitalize">{{ $mood['value'] }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="content" class="block text-sm font-medium text-slate-600 mb-1">Your Thoughts</label>
+                                <textarea name="content" id="content" rows="6" required placeholder="Write whatever you want here..." class="w-full rounded-xl border-slate-200 focus:border-teal-500 focus:ring-teal-500 transition-colors text-sm resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 rounded-xl transition-all shadow-md shadow-teal-200 hover:shadow-lg flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                                Save Entry
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right Column: Timeline/Grid -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <span>📚</span> Your History
+                        <span class="ml-auto text-xs font-normal text-slate-500 bg-white px-2 py-1 rounded-full border">Total: {{ count($journals) }}</span>
+                    </h3>
+
+                    @if($journals->count() > 0)
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach($journals as $journal)
+                                @php
+                                    $moodColors = [
+                                        'happy' => 'bg-yellow-50 border-yellow-200 text-yellow-700',
+                                        'calm' => 'bg-blue-50 border-blue-200 text-blue-700',
+                                        'neutral' => 'bg-slate-50 border-slate-200 text-slate-700',
+                                        'sad' => 'bg-purple-50 border-purple-200 text-purple-700',
+                                        'angry' => 'bg-red-50 border-red-200 text-red-700',
+                                    ];
+                                    $moodEmojis = [
+                                        'happy' => '😄', 'calm' => '😌', 'neutral' => '😐', 'sad' => '😢', 'angry' => '😠',
+                                    ];
+                                    $theme = $moodColors[$journal->mood] ?? 'bg-white border-slate-200 text-slate-700';
+                                    $emoji = $moodEmojis[$journal->mood] ?? '📝';
+                                @endphp
+
+                                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition group relative overflow-hidden">
+                                     <!-- Decor header based on mood -->
+                                     <div class="absolute top-0 left-0 w-full h-1 {{ explode(' ', $theme)[0] }} {{ explode(' ', $theme)[1] }} border-b"></div>
+
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-2xl">{{ $emoji }}</span>
+                                            <div>
+                                                <h4 class="font-bold text-slate-800 line-clamp-1">{{ $journal->title }}</h4>
+                                                <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">{{ $journal->created_at->format('M d, Y • H:i') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-4">
+                                        {{ $journal->content }}
+                                    </p>
+
+                                    <div class="flex justify-end items-center pt-3 border-t border-slate-50">
+                                         <!-- Delete Form -->
+                                         <form action="{{ route('journal.destroy', $journal->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this memory?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-slate-400 hover:text-red-500 text-xs font-semibold px-2 py-1 rounded hover:bg-red-50 transition flex items-center gap-1">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300">
+                            <div class="text-4xl mb-3 opacity-30">📭</div>
+                            <p class="text-slate-500 font-medium">Your journal is empty.</p>
+                            <p class="text-slate-400 text-sm mt-1">Start writing your first entry today!</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
