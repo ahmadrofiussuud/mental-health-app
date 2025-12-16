@@ -98,9 +98,17 @@
                         <h2 class="font-bold text-lg text-slate-800">Student Insights Feed</h2>
                         <p class="text-slate-500 text-xs">Real-time updates from student journals and mood checks.</p>
                     </div>
-                    <button class="text-indigo-600 hover:text-indigo-700 text-sm font-bold flex items-center gap-1">
-                        View All History <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                    </button>
+                    <div class="flex items-center gap-3">
+                         <button onclick="analyzeFeed()" id="btn-analyze" class="bg-indigo-100 text-indigo-700 hover:bg-indigo-200 px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                            AI Analyze Feed
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Analysis Result Container -->
+                <div id="conflict-analysis-result" class="hidden border-b border-indigo-100 bg-indigo-50/30 p-6 animate-fade-in">
+                    <!-- Content injected by JS -->
                 </div>
 
                 <!-- Feed List -->
@@ -113,7 +121,24 @@
                             $suggestion = "Keep monitoring. Encourage positive habits.";
                             $suggestionColor = "text-slate-500";
                             
-                            if($activity->mood == 'sad') {
+                            // 1. Keyword content analysis (Overrides mood tag)
+                            $negativeKeywords = ['nyindir', 'ganggu', 'ejek', 'nangis', 'sedih', 'marah', 'benci', 'sakit', 'bullied', 'takut'];
+                            $contentLower = strtolower($activity->content);
+                            $foundNegative = false;
+                            
+                            foreach($negativeKeywords as $keyword) {
+                                if(str_contains($contentLower, $keyword)) {
+                                    $foundNegative = true;
+                                    break;
+                                }
+                            }
+
+                            if($foundNegative) {
+                                $suggestion = "⚠️ Content indicates distress despite mood label. Check in immediately.";
+                                $suggestionColor = "text-red-600 font-bold";
+                            } 
+                            // 2. Fallback to Mood Analysis
+                            elseif($activity->mood == 'sad') {
                                 $suggestion = "Student seems down. A gentle 'How are you?' might help.";
                                 $suggestionColor = "text-blue-600";
                             } elseif($activity->mood == 'angry') {
@@ -171,4 +196,169 @@
             </div>
         </div>
     </div>
+    <!-- INLINED CHATBOT WIDGET -->
+    <div id="mindcare-chatbot" class="fixed bottom-6 right-6" style="z-index: 9999;">
+        <!-- Chat Toggle Button -->
+        <button onclick="toggleChat()" class="bg-teal-600 hover:bg-teal-700 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-16 h-16 border-2 border-white ring-2 ring-teal-200">
+            <!-- Chat Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col" style="height: 500px;">
+            <div class="bg-teal-600 p-4 flex justify-between items-center text-white">
+                <div class="flex items-center space-x-2">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <h3 class="font-bold text-lg">MindCare AI</h3>
+                </div>
+                <button onclick="toggleChat()" class="text-teal-100 hover:text-white focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50">
+                <div class="flex flex-col space-y-1">
+                    <div class="bg-white p-3 rounded-lg rounded-tl-none shadow-sm max-w-[85%] self-start border border-gray-100 text-gray-700 text-sm">
+                        Halo! Saya MindCare AI. Saya di sini untuk menjadi teman curhat atau membantu Bapak/Ibu Guru menangani masalah di kelas.
+                        <br><br>
+                        Ceritakan apa yang sedang terjadi?
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white border-t border-gray-100">
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="chat-input" 
+                        class="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm"
+                        placeholder="Ketik pesan..." onkeypress="handleEnter(event)">
+                    <button onclick="sendMessage()" class="bg-teal-600 hover:bg-teal-700 text-white rounded-full p-2 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const window = document.getElementById('chat-window');
+            window.classList.toggle('hidden');
+            if (!window.classList.contains('hidden')) {
+                document.getElementById('chat-input').focus();
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            appendMessage(message, 'user');
+            input.value = '';
+
+            const loadingId = 'loading-' + Date.now();
+            appendLoading(loadingId);
+            scrollToBottom();
+
+            try {
+                const response = await fetch("{{ route('chatbot.send') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+                document.getElementById(loadingId).remove();
+
+                if (data.success) {
+                    appendMessage(data.message, 'ai');
+                } else {
+                    appendMessage("Maaf, terjadi kesalahan.", 'ai');
+                }
+
+            } catch (error) {
+                document.getElementById(loadingId).remove();
+                appendMessage("Gagal terhubung ke server.", 'ai');
+            }
+            scrollToBottom();
+        }
+
+        function appendMessage(text, sender) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = 'flex flex-col space-y-1';
+            
+            let bubbleClass = sender === 'user' ? 'bg-teal-600 text-white rounded-tr-none' : 'bg-white border border-gray-100 text-gray-700 rounded-tl-none';
+            div.className += sender === 'user' ? ' items-end' : ' items-start';
+
+            div.innerHTML = `<div class="p-3 rounded-lg shadow-sm max-w-[85%] text-sm ${bubbleClass}">${text.replace(/\\n/g, '<br>')}</div>`;
+            messagesDiv.appendChild(div);
+        }
+
+        function appendLoading(id) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = 'flex flex-col space-y-1 items-start';
+            div.innerHTML = '<div class="bg-gray-200 p-3 rounded-lg rounded-tl-none shadow-sm text-gray-500 text-xs italic">Sedang mengetik...</div>';
+            messagesDiv.appendChild(div);
+        }
+        
+        function scrollToBottom() {
+            const messagesDiv = document.getElementById('chat-messages');
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        function analyzeFeed() {
+            const btn = document.getElementById('btn-analyze');
+            const resultDiv = document.getElementById('conflict-analysis-result');
+            
+            // Loading State
+            btn.innerHTML = '<div class="animate-spin rounded-full h-3 w-3 border-b-2 border-indigo-700 mr-2"></div> Scanning...';
+            btn.disabled = true;
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = '<div class="flex items-center justify-center text-indigo-400 text-sm py-4">Analyzing recent journal entries for conflicts...</div>';
+
+            fetch("{{ route('teacher.analyze') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                btn.innerHTML = 'AI Analyze Feed';
+                btn.disabled = false;
+                
+                if (data.success) {
+                    resultDiv.innerHTML = data.analysis;
+                } else {
+                    resultDiv.innerHTML = '<p class="text-red-500 text-sm p-4 text-center">Analysis failed. Please try again.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                btn.innerHTML = 'AI Analyze Feed';
+                btn.disabled = false;
+                resultDiv.innerHTML = '<p class="text-red-500 text-sm p-4 text-center">System error occurred.</p>';
+            });
+        }
+    </script>
 </x-app-layout>

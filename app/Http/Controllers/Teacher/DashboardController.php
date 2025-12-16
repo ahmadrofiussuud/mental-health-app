@@ -9,6 +9,23 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    public function __construct(protected \App\Services\ChatbotService $chatbotService) {}
+
+    public function analyzeConflicts()
+    {
+        $recentEntries = Journal::with('user')
+            ->latest()
+            ->take(20) // Analyze last 20 entries
+            ->get();
+
+        $analysis = $this->chatbotService->analyzeJournalConflicts($recentEntries);
+
+        return response()->json([
+            'success' => true,
+            'analysis' => $analysis
+        ]);
+    }
+
     public function index()
     {
         // 1. Total Students

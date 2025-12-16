@@ -55,6 +55,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/journal', [App\Http\Controllers\JournalController::class, 'store'])->name('journal.store');
     Route::delete('/journal/{id}', [App\Http\Controllers\JournalController::class, 'destroy'])->name('journal.destroy');
 
+    // Chatbot Route
+    Route::post('/chatbot/send', [App\Http\Controllers\ChatbotController::class, 'sendMessage'])->name('chatbot.send');
+
+    // AI Tools Sandbox Page
+    Route::get('/ai-tools', function () {
+        return view('pages.ai-tools');
+    })->name('ai-tools');
+
     // --- Student Routes ---
     Route::prefix('student')->name('student.')->group(function () {
         // TODO: Add 'role:student' middleware later
@@ -65,11 +73,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('teacher')->name('teacher.')->group(function () {
         // TODO: Add 'role:teacher' middleware later
         Route::get('/dashboard', [TeacherDashboard::class, 'index'])->name('dashboard');
+        Route::post('/analyze-conflicts', [TeacherDashboard::class, 'analyzeConflicts'])->name('analyze');
     });
 
     // --- Admin Routes ---
     Route::prefix('admin')->name('admin.')->group(function () {
-         Route::get('/dashboard', function () { return "Admin Layout Placeholder"; })->name('dashboard');
+         Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+         Route::get('/users/create', [App\Http\Controllers\AdminController::class, 'createUser'])->name('users.create');
+         Route::post('/users', [App\Http\Controllers\AdminController::class, 'storeUser'])->name('users.store');
+         Route::get('/conflict-mediator', [App\Http\Controllers\AdminController::class, 'conflictTool'])->name('conflict');
     });
 
 });

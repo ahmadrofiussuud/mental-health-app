@@ -31,6 +31,7 @@ class JournalController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'mood' => $request->mood,
+            'is_anonymous' => $request->has('is_anonymous'),
         ]);
 
         return redirect()->route('journal.index')->with('success', 'Journal entry saved successfully!');

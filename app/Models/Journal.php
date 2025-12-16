@@ -10,7 +10,8 @@ class Journal extends Model
         'user_id',
         'title',
         'content',
-        'mood'
+        'mood',
+        'is_anonymous'
     ];
 
     public function user()

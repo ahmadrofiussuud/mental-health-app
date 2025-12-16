@@ -66,6 +66,15 @@
                                 <textarea name="content" id="content" rows="6" required placeholder="Write whatever you want here..." class="w-full rounded-xl border-slate-200 focus:border-teal-500 focus:ring-teal-500 transition-colors text-sm resize-none"></textarea>
                             </div>
 
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" name="is_anonymous" id="is_anonymous" value="1" class="rounded border-slate-300 text-teal-600 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50">
+                                <label for="is_anonymous" class="text-sm text-slate-600 flex items-center gap-1 cursor-pointer">
+                                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                                    Post Anonymously
+                                    <span class="text-xs text-slate-400 ml-1">(Hide my name from teachers)</span>
+                                </label>
+                            </div>
+
                             <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 rounded-xl transition-all shadow-md shadow-teal-200 hover:shadow-lg flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
                                 Save Entry
@@ -107,7 +116,12 @@
                                         <div class="flex items-center gap-2">
                                             <span class="text-2xl">{{ $emoji }}</span>
                                             <div>
-                                                <h4 class="font-bold text-slate-800 line-clamp-1">{{ $journal->title }}</h4>
+                                                <h4 class="font-bold text-slate-800 line-clamp-1">
+                                                    {{ $journal->title }}
+                                                    @if($journal->is_anonymous)
+                                                        <span class="ml-2 bg-slate-800 text-white text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">Anon</span>
+                                                    @endif
+                                                </h4>
                                                 <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">{{ $journal->created_at->format('M d, Y • H:i') }}</p>
                                             </div>
                                         </div>

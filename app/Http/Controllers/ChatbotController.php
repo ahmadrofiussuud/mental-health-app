@@ -28,7 +28,7 @@ class ChatbotController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $response
+            'message' => $response // Changed key to 'message' to be clearer, or keep 'data' if frontend expects it. Let's send both to be safe.
         ]);
     }
 }

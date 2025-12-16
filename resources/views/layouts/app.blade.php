@@ -37,6 +37,11 @@
             @include('layouts.footer')
         </div>
         
+        <!-- MindCare AI Chat Widget -->
+        @auth
+            @include('components.chatbot')
+        @endauth
+
         @stack('scripts')
     </body>
 </html>
