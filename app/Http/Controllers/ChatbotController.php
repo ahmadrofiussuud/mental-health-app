@@ -24,7 +24,8 @@ class ChatbotController extends Controller
             'message' => 'required|string|max:500'
         ]);
         
-        $response = $this->chatbotService->processMessage($request->message);
+        $context = $request->input('context', []);
+        $response = $this->chatbotService->processMessage($request->message, $context);
         
         return response()->json([
             'success' => true,

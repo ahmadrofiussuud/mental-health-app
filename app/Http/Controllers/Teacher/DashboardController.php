@@ -7,9 +7,14 @@ use App\Models\User;
 use App\Models\Journal;
 use Illuminate\Support\Facades\DB;
 
+use App\Services\RiskAssessmentService;
+
 class DashboardController extends Controller
 {
-    public function __construct(protected \App\Services\ChatbotService $chatbotService) {}
+    public function __construct(
+        protected \App\Services\ChatbotService $chatbotService,
+        protected RiskAssessmentService $riskAssessmentService
+    ) {}
 
     public function analyzeConflicts()
     {
@@ -51,13 +56,9 @@ class DashboardController extends Controller
 
         $currentMoodStats = $moodMap[$dominantMood] ?? $moodMap['neutral'];
 
-        // 3. Behavior Alerts (Logic: Students with 'sad' or 'angry' mood in last 3 days)
-        $riskStudents = Journal::whereIn('mood', ['sad', 'angry'])
-            ->where('created_at', '>=', now()->subDays(3))
-            ->with('user')
-            ->select('user_id', DB::raw('count(*) as risk_count'))
-            ->groupBy('user_id')
-            ->having('risk_count', '>=', 1) // Flag if even 1 negative entry
+        // 3. Behavior Alerts -> Refined to use Risk Score > 30 OR pattern
+        $riskStudents = User::where('role', 'student')
+            ->where('risk_score', '>', 30) // Use the new Risk Logic
             ->get();
 
         // 4. Recent Activities (Journal Entries)
@@ -74,5 +75,36 @@ class DashboardController extends Controller
             'recentActivities',
             'moodMap'
         ));
+    }
+
+    // --- New Features Methods ---
+
+    public function riskOverview()
+    {
+        // Calculate risks for all students (Demo purpose: ideally run via Job/Command)
+        $students = User::where('role', 'student')->get();
+        foreach($students as $student) {
+            $this->riskAssessmentService->updateRiskProfile($student);
+        }
+
+        $highRiskStudents = User::where('role', 'student')
+            ->orderByDesc('risk_score')
+            ->get();
+
+        return view('teacher.risk-overview', compact('highRiskStudents'));
+    }
+
+    public function showStudent($id)
+    {
+        $student = User::findOrFail($id);
+        
+        // Ensure accurate risk profile on view
+        $this->riskAssessmentService->updateRiskProfile($student);
+
+        $journals = Journal::where('user_id', $student->id)
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        return view('teacher.student-detail', compact('student', 'journals'));
     }
 }

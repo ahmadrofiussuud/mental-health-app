@@ -74,6 +74,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // TODO: Add 'role:teacher' middleware later
         Route::get('/dashboard', [TeacherDashboard::class, 'index'])->name('dashboard');
         Route::post('/analyze-conflicts', [TeacherDashboard::class, 'analyzeConflicts'])->name('analyze');
+        
+        // New Features
+        Route::get('/risk-overview', [TeacherDashboard::class, 'riskOverview'])->name('risk.overview');
+        Route::get('/student/{id}', [TeacherDashboard::class, 'showStudent'])->name('student.show');
     });
 
     // --- Admin Routes ---

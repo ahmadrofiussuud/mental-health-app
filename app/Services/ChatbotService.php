@@ -11,10 +11,20 @@ class ChatbotService
      * Process user message and return AI response using Google Gemini
      * Acting as a "Teacher Copilot" for mental health support.
      */
-    public function processMessage(string $message): string
+    public function processMessage(string $message, array $context = []): string
     {
         $apiKey = env('GEMINI_API_KEY');
-        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}";
+        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key={$apiKey}";
+
+        // Prepare Context String
+        $contextInfo = "";
+        if (!empty($context)) {
+            $contextInfo = "CURRENT CONTEXT:\n";
+            if(isset($context['student_name'])) $contextInfo .= "- Student: {$context['student_name']}\n";
+            if(isset($context['risk_score'])) $contextInfo .= "- Risk Score: {$context['risk_score']} (0-100)\n";
+            if(isset($context['risk_summary'])) $contextInfo .= "- Risk Factors: {$context['risk_summary']}\n";
+            if(isset($context['recent_journals'])) $contextInfo .= "- Recent Journals:\n{$context['recent_journals']}\n";
+        }
 
         // System instruction to define the persona
         $systemPrompt = "You are 'MindCare AI', an empathetic expert assistant for school teachers. 
@@ -26,6 +36,8 @@ class ChatbotService
         3.  **Actionable Scripts.** Give the teacher exact words to say. Example: 'Try saying: I noticed you seem down...'
         4.  **Safety First.** If there is a risk of self-harm or violence, advise immediate professional intervention.
         5.  **Language.** Reply in Indonesian (Bahasa Indonesia) that is professional but warm.
+        
+        {$contextInfo}
         
         Scenario Analysis:
         User Input: {$message}";
@@ -98,6 +110,11 @@ class ChatbotService
           </div>
         ";
 
+        if (empty($apiKey)) {
+            Log::error('Gemini API Key is missing in .env');
+            return "Error: Konfigurasi API Key belum dipasang. Hubungi administrator.";
+        }
+
         try {
             $response = Http::post($apiUrl, [
                 'contents' => [
@@ -111,15 +128,14 @@ class ChatbotService
 
             if ($response->successful()) {
                 $data = $response->json();
-                return $data['candidates'][0]['content']['parts'][0]['text'] ?? "Analysis failed.";
+                return $data['candidates'][0]['content']['parts'][0]['text'] ?? 'Maaf, saya tidak mengerti.';
             } else {
-                Log::error('Gemini Analysis Error: ' . $response->body());
-                return "AI Analysis Service Unavailable.";
+                Log::error('Gemini API Error: ' . $response->body());
+                return "Maaf, sistem AI sedang sibuk atau mengalami gangguan. (Error: " . $response->status() . ")";
             }
-
         } catch (\Exception $e) {
-            Log::error('Chatbot Analysis Exception: ' . $e->getMessage());
-            return "System Error during analysis.";
+            Log::error('Gemini Connection Exception: ' . $e->getMessage());
+            return "Maaf, terjadi kesalahan koneksi.";
         }
     }
 }
