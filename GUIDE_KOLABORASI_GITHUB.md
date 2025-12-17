@@ -34,27 +34,51 @@ Agar temanmu bisa `push` (upload codingan dia), kamu harus mengundangnya:
 
 ---
 
-## Langkah 3: Cara Kerja Untuk Temanmu (Partner)
+## Langkah Khusus Pengguna Laragon (Windows)
 
-Kirimkan panduan ini ke temanmu.
+Jika temanmu menggunakan **Laragon**, ikuti langkah ini agar lebih mudah:
 
-### 1. Clone (Download) Project
-Temanmu harus membuka terminal di laptopnya (folder `laragon/www` atau `htdocs`) dan jalankan:
-```bash
-git clone https://github.com/USERNAME/mindcare-app.git
-cd mindcare-app
-```
+1.  **Buka Aplikasi Laragon**.
+2.  Klik tombol **Start All** (pastikan Apache & MySQL hijau/jalan).
+3.  Klik tombol **Terminal** di menu bawah Laragon.
+    *   *Ini akan membuka layar hitam (Cmder/Command Prompt) yang otomatis berada di folder project.*
+4.  Ketik perintah ini di layar hitam tersebut untuk mengambil project:
 
-### 2. Setup Awal (Hanya Sekali)
-Temanmu perlu menginstall hal-hal berikut agar web bisa jalan di laptopnya:
-```bash
-composer install
-npm install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate:fresh --seed
-```
-*Catatan: Temanmu mungkin perlu setting database di `.env` agar sesuai dengan laptopnya.*
+    ```bash
+    cd www
+    git clone https://github.com/USERNAME/mindcare-app.git
+    cd mindcare-app
+    ```
+    *(Ganti `USERNAME` dengan username GitHub pemilik project)*
+
+### Setup Lanjutan (Wajib Dilakukan Sekali Saja)
+
+Setelah masuk ke folder `mindcare-app` di terminal tadi, jalankan perintah ini satu per satu (tunggu sampai selesai baru lanjut ke baris berikutnya):
+
+1.  **Install Library PHP & JavaScript:**
+    ```bash
+    composer install
+    npm install
+    ```
+
+2.  **Setting File Lingkungan (.env):**
+    ```bash
+    copy .env.example .env
+    php artisan key:generate
+    ```
+
+3.  **Persiapkan Database:**
+    *   Pastikan di Laragon database MySQL sudah *Start*.
+    *   Jalankan perintah ini untuk membuat tabel otomatis:
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
+
+4.  **Jalankan Project:**
+    ```bash
+    npm run dev
+    ```
+    *(Buka terminal baru/tab baru untuk menjalankan `php artisan serve` jika perlu, tapi biasanya Laragon sudah punya auto-host di http://mindcare-app.test)*
 
 ### 3. Cara Update Codingan (Pull & Push)
 
