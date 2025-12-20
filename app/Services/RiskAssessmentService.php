@@ -109,7 +109,7 @@ class RiskAssessmentService
     private function analyzeWithAI($journals)
     {
         $apiKey = env('GEMINI_API_KEY');
-        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key={$apiKey}";
+        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}";
 
         $journalText = "";
         foreach ($journals as $j) {

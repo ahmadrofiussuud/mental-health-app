@@ -1,52 +1,72 @@
-<footer class="bg-slate-900 text-white border-t border-slate-800 mt-auto">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
-            <!-- Brand -->
-            <div class="col-span-1 md:col-span-2">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-purple-400">MindCare</h3>
+<footer class="bg-gradient-to-br from-slate-50 to-white border-t border-slate-200 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Brand Section -->
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('images/serenity-hub-logo.png') }}" alt="Serenity Hub Logo" class="w-12 h-12 rounded-xl shadow-sm">
+                    <span class="font-black text-xl bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-purple-600">SerenityHub</span>
                 </div>
-                <p class="text-slate-400 text-sm leading-relaxed max-w-sm">
-                    A safe space for students to express their emotions and for teachers to provide the right guidance. Mental health matters, and so do you.
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    Supporting student mental health through AI-powered tools and compassionate guidance.
                 </p>
-                <div class="flex gap-4 mt-6">
-                    <a href="#" class="text-slate-400 hover:text-white transition-colors"><span class="sr-only">Instagram</span>📷</a>
-                    <a href="#" class="text-slate-400 hover:text-white transition-colors"><span class="sr-only">Twitter</span>🐦</a>
-                    <a href="#" class="text-slate-400 hover:text-white transition-colors"><span class="sr-only">LinkedIn</span>💼</a>
+                <div class="flex gap-2">
+                    <span class="px-2 py-1 bg-teal-50 text-teal-600 text-xs font-semibold rounded-lg">Mental Health</span>
+                    <span class="px-2 py-1 bg-purple-50 text-purple-600 text-xs font-semibold rounded-lg">AI-Powered</span>
                 </div>
             </div>
-
-            <!-- Links -->
-            <div>
-                <h4 class="font-semibold text-white mb-4 tracking-wide uppercase text-xs">Resources</h4>
-                <ul class="text-sm text-slate-400 space-y-3">
-                    <li><a href="#" class="hover:text-teal-400 transition-colors">Help Center</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition-colors">Terms of Service</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition-colors">Counseling Guide</a></li>
+            
+            <!-- Quick Links -->
+            <div class="md:pl-8">
+                <h3 class="font-bold text-slate-800 mb-4 text-sm uppercase tracking-wider">Quick Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>
+                        <a href="{{ route('dashboard') }}" class="text-slate-600 hover:text-teal-600 transition flex items-center gap-2 group">
+                            <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('mood.check') }}" class="text-slate-600 hover:text-teal-600 transition flex items-center gap-2 group">
+                            <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            Mood Check
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('journal.index') }}" class="text-slate-600 hover:text-teal-600 transition flex items-center gap-2 group">
+                            <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            Journal
+                        </a>
+                    </li>
                 </ul>
             </div>
-
-            <!-- Contact -->
+            
+            <!-- Support -->
             <div>
-                <h4 class="font-semibold text-white mb-4 tracking-wide uppercase text-xs">Emergency Support</h4>
-                <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                    <p class="text-xs text-slate-400 mb-1">Immediate Help (24/7)</p>
-                    <p class="text-lg font-bold text-red-400 tracking-wider">119</p>
-                </div>
-                <div class="mt-4">
-                    <p class="text-xs text-slate-400 mb-1">School Counselor</p>
-                    <p class="text-sm text-slate-300">Building B, Room 204</p>
-                    <p class="text-sm text-slate-300 mt-1">counselor@school.com</p>
+                <h3 class="font-bold text-slate-800 mb-4 text-sm uppercase tracking-wider">Need Help?</h3>
+                <div class="space-y-3">
+                    <p class="text-sm text-slate-600">
+                        Our counselors are here to listen and support you.
+                    </p>
+                    <a href="#" class="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 to-purple-600 hover:from-teal-700 hover:to-purple-700 text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        Chat with Counselor
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="border-t border-slate-800 mt-12 pt-8 text-center flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
-            <p>&copy; {{ date('Y') }} MindCare Project.</p>
-            <p>Made with ❤️ for students.</p>
+        
+        <!-- Bottom Bar -->
+        <div class="mt-8 pt-6 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm text-slate-500">
+                © {{ date('Y') }} SerenityHub - Mental Health App for Schools
+            </div>
+            
+            <div class="flex gap-6 text-sm">
+                <a href="#" class="text-slate-600 hover:text-indigo-600 transition font-medium">Privacy Policy</a>
+                <a href="#" class="text-slate-600 hover:text-indigo-600 transition font-medium">Support Center</a>
+                <a href="#" class="text-slate-600 hover:text-indigo-600 transition font-medium">About Us</a>
+            </div>
         </div>
     </div>
 </footer>

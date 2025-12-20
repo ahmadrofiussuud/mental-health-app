@@ -1,13 +1,46 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-bold text-2xl text-slate-800 leading-tight flex items-center gap-2">
-            <span class="text-3xl">📓</span> {{ __('My Journal') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12 bg-slate-50 min-h-screen">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             
+            <!-- Hero Banner: Card Overlay Style -->
+            <div class="relative w-full h-[380px] rounded-[3rem] overflow-hidden shadow-sm group">
+                <!-- Background Image -->
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-100 via-pink-50 to-purple-50">
+                     <img src="{{ asset('images/journal-hero.png') }}" class="w-full h-full object-cover object-center opacity-90" alt="Journal">
+                </div>
+                
+                <!-- Floating Card: Aligned Left -->
+                <div class="absolute inset-y-0 left-0 md:left-12 flex items-center z-10 w-full md:w-auto">
+                    <div class="bg-white/95 backdrop-blur-sm p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/50 max-w-xl mx-4 md:mx-0 transform transition duration-500 hover:scale-[1.01]">
+                        
+                        <!-- Badge -->
+                        <div class="inline-flex items-center gap-2 mb-5 bg-orange-50 px-4 py-1.5 rounded-full border border-orange-100">
+                            <span class="relative flex h-3 w-3">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
+                            </span>
+                            <span class="text-xs font-bold text-orange-600 uppercase tracking-widest">My Journal</span>
+                        </div>
+                        
+                        <!-- Title -->
+                        <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
+                            Express yourself, <span class="text-purple-600">{{ Auth::user()->name }}</span>! 📝
+                        </h1>
+                        
+                        <!-- Quote -->
+                        <p class="text-slate-600 font-medium text-base mb-6 leading-relaxed border-l-4 border-purple-100 pl-4 py-1">
+                            Writing helps you process emotions and track your mental health journey. Share what's on your mind!
+                        </p>
+                        
+                        <!-- Stats Badge -->
+                        <div class="inline-flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl text-sm font-medium text-slate-600 border border-slate-100">
+                            <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                            {{ count($journals) }} {{ str('entry')->plural(count($journals)) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Success Message -->
             @if(session('success'))
                 <div class="bg-teal-100 border border-teal-200 text-teal-800 px-4 py-3 rounded-xl flex items-center gap-2 shadow-sm" role="alert">

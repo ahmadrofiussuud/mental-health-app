@@ -4,13 +4,11 @@
         <div class="flex justify-between h-20">
             <div class="flex items-center">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center gap-3">
+                <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center gap-2 group">
-                         <div class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-all duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                        </div>
+                        <img src="{{ asset('images/serenity-hub-logo.png') }}" class="w-10 h-10 transition-transform group-hover:scale-110" alt="Logo">
                         <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-purple-600">
-                            MindCare
+                            SerenityHub
                         </span>
                     </a>
                 </div>
@@ -32,10 +30,7 @@
                         {{ __('Journal') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('ai-tools')" :active="request()->routeIs('ai-tools')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('ai-tools') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                        {{ __('AI Tools') }}
-                    </x-nav-link>
+
                 </div>
             </div>
 
@@ -101,9 +96,7 @@
             <x-responsive-nav-link :href="route('journal.index')" :active="request()->routeIs('journal.index')">
                 {{ __('Journal') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('ai-tools')" :active="request()->routeIs('ai-tools')">
-                {{ __('AI Tools') }}
-            </x-responsive-nav-link>
+
         </div>
 
         <!-- Responsive Settings Options -->

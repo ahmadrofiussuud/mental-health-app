@@ -1,36 +1,42 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <h2 class="font-bold text-2xl text-slate-800 leading-tight flex items-center gap-2">
-                    <span class="text-3xl">✨</span> {{ __('Mood Check-In') }}
-                </h2>
-                <p class="text-slate-500 text-sm mt-1">Take a moment to understand how you feel today.</p>
-            </div>
-            <div class="hidden md:block">
-                 <span class="px-4 py-2 bg-white rounded-full text-sm font-medium text-teal-600 shadow-sm border border-teal-100 flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    {{ date('l, d F Y') }}
-                 </span>
-            </div>
-        </div>
-    </x-slot>
-
-    <div class="py-12 bg-slate-50 min-h-screen">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-10">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             
-            <!-- Welcome Alert -->
-            <div class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-6 shadow-lg text-white relative overflow-hidden">
-                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-                <div class="relative z-10 flex items-start gap-4">
-                    <div class="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg">Daily Check-In</h3>
-                        <p class="text-teal-100 text-sm mt-1 max-w-2xl">
-                            Hi <span class="font-bold text-white">{{ Auth::user()->name }}</span>! checking in with your emotions helps you stay balanced. Try our AI-powered Mood Scanner or just vent out your feelings below. We are here for you!
+            <!-- Hero Banner: Card Overlay Style -->
+            <div class="relative w-full h-[380px] rounded-[3rem] overflow-hidden shadow-sm group">
+                <!-- Background Image -->
+                <div class="absolute inset-0 bg-gradient-to-br from-teal-100 via-purple-50 to-pink-50">
+                     <img src="{{ asset('images/mood-check-hero.png') }}" class="w-full h-full object-cover object-center opacity-90" alt="Mood Check">
+                </div>
+                
+                <!-- Floating Card: Aligned Left -->
+                <div class="absolute inset-y-0 left-0 md:left-12 flex items-center z-10 w-full md:w-auto">
+                    <div class="bg-white/95 backdrop-blur-sm p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/50 max-w-xl mx-4 md:mx-0 transform transition duration-500 hover:scale-[1.01]">
+                        
+                        <!-- Badge -->
+                        <div class="inline-flex items-center gap-2 mb-5 bg-teal-50 px-4 py-1.5 rounded-full border border-teal-100">
+                            <span class="relative flex h-3 w-3">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+                            </span>
+                            <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Mood Check-In</span>
+                        </div>
+                        
+                        <!-- Title -->
+                        <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
+                            How are you feeling, <span class="text-indigo-600">{{ Auth::user()->name }}</span>? ✨
+                        </h1>
+                        
+                        <!-- Quote -->
+                        <p class="text-slate-600 font-medium text-base mb-6 leading-relaxed border-l-4 border-indigo-100 pl-4 py-1">
+                            Checking in with your emotions helps you stay balanced. Try our AI-powered tools below!
                         </p>
+                        
+                        <!-- Date Badge -->
+                        <div class="inline-flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl text-sm font-medium text-slate-600 border border-slate-100">
+                            <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            {{ date('l, d F Y') }}
+                        </div>
                     </div>
                 </div>
             </div>

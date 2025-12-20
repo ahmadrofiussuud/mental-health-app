@@ -14,7 +14,7 @@ class ChatbotService
     public function processMessage(string $message, array $context = []): string
     {
         $apiKey = env('GEMINI_API_KEY');
-        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key={$apiKey}";
+        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}";
 
         // Prepare Context String
         $contextInfo = "";
@@ -110,11 +110,6 @@ class ChatbotService
           </div>
         ";
 
-        if (empty($apiKey)) {
-            Log::error('Gemini API Key is missing in .env');
-            return "Error: Konfigurasi API Key belum dipasang. Hubungi administrator.";
-        }
-
         try {
             $response = Http::post($apiUrl, [
                 'contents' => [
@@ -128,14 +123,15 @@ class ChatbotService
 
             if ($response->successful()) {
                 $data = $response->json();
-                return $data['candidates'][0]['content']['parts'][0]['text'] ?? 'Maaf, saya tidak mengerti.';
+                return $data['candidates'][0]['content']['parts'][0]['text'] ?? "Analysis failed.";
             } else {
-                Log::error('Gemini API Error: ' . $response->body());
-                return "Maaf, sistem AI sedang sibuk atau mengalami gangguan. (Error: " . $response->status() . ")";
+                Log::error('Gemini Analysis Error: ' . $response->body());
+                return "AI Analysis Service Unavailable.";
             }
+
         } catch (\Exception $e) {
-            Log::error('Gemini Connection Exception: ' . $e->getMessage());
-            return "Maaf, terjadi kesalahan koneksi.";
+            Log::error('Chatbot Analysis Exception: ' . $e->getMessage());
+            return "System Error during analysis.";
         }
     }
 }
