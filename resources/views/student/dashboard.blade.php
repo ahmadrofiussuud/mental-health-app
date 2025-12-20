@@ -3,18 +3,18 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             
             <!-- Hero Banner: Card Overlay Style -->
-            <div class="relative w-full h-[500px] rounded-[3rem] overflow-hidden shadow-sm group">
+            <div class="relative w-full h-[380px] rounded-[3rem] overflow-hidden shadow-sm group">
                 <!-- Background Image: Aligned to Right to show the bus -->
                 <div class="absolute inset-0 bg-slate-100">
-                     <img src="{{ asset('images/school-bus.png') }}" class="w-full h-full object-cover object-right md:object-[right_center]" alt="School Bus">
+                     <img src="{{ asset('images/school-bus.png') }}" class="w-full h-full object-cover object-center" alt="School Bus">
                 </div>
                 
                 <!-- Floating Card: Aligned Left -->
                 <div class="absolute inset-y-0 left-0 md:left-12 flex items-center z-10 w-full md:w-auto">
-                    <div class="bg-white/95 backdrop-blur-sm p-10 md:p-14 rounded-[2.5rem] shadow-2xl border border-white/50 max-w-xl mx-4 md:mx-0 transform transition duration-500 hover:scale-[1.01]">
+                    <div class="bg-white/95 backdrop-blur-sm p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/50 max-w-xl mx-4 md:mx-0 transform transition duration-500 hover:scale-[1.01]">
                         
                         <!-- Badge -->
-                        <div class="inline-flex items-center gap-2 mb-6 bg-teal-50 px-4 py-1.5 rounded-full border border-teal-100">
+                        <div class="inline-flex items-center gap-2 mb-5 bg-teal-50 px-4 py-1.5 rounded-full border border-teal-100">
                             <span class="relative flex h-3 w-3">
                               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
                               <span class="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
@@ -23,12 +23,12 @@
                         </div>
                         
                         <!-- Title -->
-                        <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight">
+                        <h1 class="text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
                             Hello, <span class="text-indigo-600">{{ Auth::user()->name }}</span>! 🎒
                         </h1>
                         
                         <!-- Quote -->
-                        <p class="text-slate-600 font-medium text-lg mb-10 leading-relaxed border-l-4 border-indigo-100 pl-4 py-1">
+                        <p class="text-slate-600 font-medium text-base mb-6 leading-relaxed border-l-4 border-indigo-100 pl-4 py-1">
                             "Every day is a new beginning. Keep learning, keep growing, and always believe in yourself!"
                         </p>
                         
