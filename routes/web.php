@@ -58,6 +58,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Chatbot Route
     Route::post('/chatbot/send', [App\Http\Controllers\ChatbotController::class, 'sendMessage'])->name('chatbot.send');
 
+    // Chat/Counselor Routes
+    Route::get('/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/teachers', [App\Http\Controllers\ChatController::class, 'getAvailableTeachers'])->name('chat.teachers');
+    Route::get('/chat/messages/{userId}', [App\Http\Controllers\ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::post('/chat/read/{messageId}', [App\Http\Controllers\ChatController::class, 'markAsRead'])->name('chat.read');
+    Route::get('/chat/unread', [App\Http\Controllers\ChatController::class, 'getUnreadCount'])->name('chat.unread');
+
+
     // AI Tools Sandbox Page
     Route::get('/ai-tools', function () {
         return view('pages.ai-tools');
