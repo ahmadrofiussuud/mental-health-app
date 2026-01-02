@@ -27,29 +27,31 @@
             <!-- Quick Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- 1. Behavior Alerts -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative overflow-hidden group hover:shadow-md transition-all cursor-pointer">
-                    <!-- Decorative Background Icon -->
-                    <div class="absolute -right-6 -top-6 p-4 opacity-5 group-hover:opacity-10 transition-opacity z-0 pointer-events-none transform rotate-12">
-                        <svg class="w-32 h-32 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"></path></svg>
-                    </div>
-                    
-                    <div class="relative z-10">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="bg-red-50 text-red-600 p-3 rounded-xl">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <a href="{{ route('teacher.risk.overview') }}" class="block">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative overflow-hidden group hover:shadow-md transition-all cursor-pointer">
+                        <!-- Decorative Background Icon -->
+                        <div class="absolute -right-6 -top-6 p-4 opacity-5 group-hover:opacity-10 transition-opacity z-0 pointer-events-none transform rotate-12">
+                            <svg class="w-32 h-32 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"></path></svg>
+                        </div>
+                        
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="bg-red-50 text-red-600 p-3 rounded-xl">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                </div>
+                                @if($riskStudents->count() > 0)
+                                    <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse shadow-sm shadow-red-200">ACTION NEEDED</span>
+                                @endif
                             </div>
-                            @if($riskStudents->count() > 0)
-                                <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse shadow-sm shadow-red-200">ACTION NEEDED</span>
-                            @endif
+                            <h3 class="text-slate-500 font-medium text-sm uppercase tracking-wide">Behavior Alerts</h3>
+                            <div class="flex items-end gap-2 mt-1">
+                                <span class="text-4xl font-black text-slate-800">{{ $riskStudents->count() }}</span>
+                                <span class="text-sm text-slate-400 mb-1">Students flagged</span>
+                            </div>
+                            <p class="text-xs text-red-500 mt-2 font-medium">Based on negative mood patterns</p>
                         </div>
-                        <h3 class="text-slate-500 font-medium text-sm uppercase tracking-wide">Behavior Alerts</h3>
-                        <div class="flex items-end gap-2 mt-1">
-                            <span class="text-4xl font-black text-slate-800">{{ $riskStudents->count() }}</span>
-                            <span class="text-sm text-slate-400 mb-1">Students flagged</span>
-                        </div>
-                        <p class="text-xs text-red-500 mt-2 font-medium">Based on negative mood patterns</p>
                     </div>
-                </div>
+                </a>
 
                 <!-- 2. Class Mood -->
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 relative overflow-hidden group hover:shadow-md transition-all">

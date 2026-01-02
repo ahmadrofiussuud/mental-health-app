@@ -15,6 +15,11 @@ class RiskAssessmentService
      */
     public function updateRiskProfile(User $student)
     {
+        // 0. Cache Check: Limit AI calls to once per day per student
+        if ($student->risk_last_updated_at && $student->risk_last_updated_at->isToday()) {
+            return;
+        }
+
         // 1. Fetch recent journals (last 7 days)
         $recentJournals = Journal::where('user_id', $student->id)
             ->where('created_at', '>=', now()->subDays(7))
@@ -24,7 +29,8 @@ class RiskAssessmentService
         if ($recentJournals->isEmpty()) {
             $student->update([
                 'risk_score' => 0,
-                'risk_summary' => "No recent activity to analyze."
+                'risk_summary' => "No recent activity to analyze.",
+                'risk_last_updated_at' => now(),
             ]);
             return;
         }
@@ -82,6 +88,7 @@ class RiskAssessmentService
         // Only call AI if there's some indication of negativity to save tokens, 
         // OR if the score is already elevated.
         $aiAnalysis = "AI Analysis not required.";
+        $aiResult = null; // Initialize
         
         if ($score > 10 || $recentJournals->count() > 0) {
            $aiResult = $this->analyzeWithAI($recentJournals);
@@ -102,14 +109,15 @@ class RiskAssessmentService
 
         $student->update([
             'risk_score' => $finalScore,
-            'risk_summary' => $summary
+            'risk_summary' => $summary,
+            'risk_last_updated_at' => now(),
         ]);
     }
 
     private function analyzeWithAI($journals)
     {
         $apiKey = env('GEMINI_API_KEY');
-        $apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}";
+        $apiUrl = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key={$apiKey}";
 
         $journalText = "";
         foreach ($journals as $j) {

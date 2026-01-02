@@ -87,6 +87,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // New Features
         Route::get('/risk-overview', [TeacherDashboard::class, 'riskOverview'])->name('risk.overview');
         Route::get('/student/{id}', [TeacherDashboard::class, 'showStudent'])->name('student.show');
+        
+        // API Usage Stats
+        Route::get('/api-stats', [TeacherDashboard::class, 'apiUsageStats'])->name('api-stats');
+        
+        // AI Advisor Routes (with throttling)
+        Route::middleware(['throttle.gemini'])->group(function () {
+            Route::get('/ai-advisor/{studentId?}', [TeacherDashboard::class, 'aiAdvisor'])->name('ai-advisor');
+            Route::post('/ai-advisor/analyze', [TeacherDashboard::class, 'aiAdvisorAnalyze'])->name('ai-advisor.analyze');
+            Route::post('/analyze-conflicts', [TeacherDashboard::class, 'analyzeConflicts'])->name('analyze');
+        });
     });
 
     // --- Admin Routes ---

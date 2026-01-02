@@ -25,6 +25,7 @@ class User extends Authenticatable
         'role',
         'risk_score',
         'risk_summary',
+        'risk_last_updated_at',
     ];
 
     /**
@@ -47,6 +48,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'risk_last_updated_at' => 'datetime',
         ];
     }
 
