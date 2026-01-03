@@ -68,8 +68,16 @@
                             </div>
                             
                             <div class="absolute bottom-8 left-8 relative z-10">
-                                <h3 class="text-7xl font-black mb-2 tracking-tighter leading-none">1</h3>
-                                <p class="text-orange-50 font-bold text-sm opacity-90">Day in a row. You're on fire!</p>
+                                <h3 class="text-7xl font-black mb-2 tracking-tighter leading-none">{{ $streak }}</h3>
+                                <p class="text-orange-50 font-bold text-sm opacity-90">
+                                    @if($streak == 0)
+                                        Start your journey today!
+                                    @elseif($streak == 1)
+                                        Day in a row. You're on fire!
+                                    @else
+                                        Days in a row. Amazing!
+                                    @endif
+                                </p>
                             </div>
                         </div>
 
@@ -83,8 +91,14 @@
                             </div>
                             
                             <div class="absolute bottom-8 left-8 relative z-10">
-                                <h3 class="text-7xl font-black mb-2 tracking-tighter leading-none">0</h3>
-                                <p class="text-purple-50 font-bold text-sm opacity-90">Capture your best moments.</p>
+                                <h3 class="text-7xl font-black mb-2 tracking-tighter leading-none">{{ $totalEntries }}</h3>
+                                <p class="text-purple-50 font-bold text-sm opacity-90">
+                                    @if($totalEntries == 0)
+                                        Start capturing your moments.
+                                    @else
+                                        Journal {{ $totalEntries > 1 ? 'entries' : 'entry' }} written!
+                                    @endif
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -102,12 +116,12 @@
                     <div class="bg-[#FEFCE8] rounded-[2rem] p-8 h-64 flex flex-col justify-center items-center text-center shadow-lg shadow-yellow-100/50 border border-yellow-100 relative overflow-hidden group hover:shadow-xl transition duration-300">
                         <!-- <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-yellow-300/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition duration-700"></div> -->
                         
-                        <div class="relative z-10 w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center text-4xl mb-6 transform group-hover:-rotate-12 transition duration-300 ease-out">😄</div>
+                        <div class="relative z-10 w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center text-4xl mb-6 transform group-hover:-rotate-12 transition duration-300 ease-out">{{ $dailyWisdom['emoji'] }}</div>
                         
                         <div class="relative z-10 px-2">
-                            <h3 class="text-xl font-black text-slate-800 mb-2">Smile More!</h3>
+                            <h3 class="text-xl font-black text-slate-800 mb-2">{{ $dailyWisdom['title'] }}</h3>
                             <p class="text-slate-600 font-medium text-sm leading-relaxed">
-                                "Did you know? Smiling releases endorphins which helps you feel better instantly. Try it now!"
+                                {{ $dailyWisdom['quote'] }}
                             </p>
                         </div>
                         
