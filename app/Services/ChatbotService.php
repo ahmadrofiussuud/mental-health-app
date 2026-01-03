@@ -10,12 +10,7 @@ use Illuminate\Support\Str;
 class ChatbotService
 {
     private $availableModels = [
-        'gemini-1.5-flash',
-        'gemini-1.5-pro',
         'gemini-2.0-flash',
-        'gemini-2.0-flash-001',
-        'gemini-2.5-flash',
-        'gemini-2.5-pro'
     ];
 
     /**
@@ -29,7 +24,7 @@ class ChatbotService
         $lastCall = Cache::get($lastCallKey);
         
         if ($lastCall) {
-            $elapsed = now()->diffInSeconds($lastCall);
+            $elapsed = now()->timestamp - $lastCall->timestamp;
             
             if ($elapsed < $minDelay) {
                 $waitTime = $minDelay - $elapsed;
