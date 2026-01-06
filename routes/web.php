@@ -82,6 +82,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('teacher')->name('teacher.')->group(function () {
         // TODO: Add 'role:teacher' middleware later
         Route::get('/dashboard', [TeacherDashboard::class, 'index'])->name('dashboard');
+        Route::get('/journals', [TeacherDashboard::class, 'journals'])->name('journals');
         Route::post('/analyze-conflicts', [TeacherDashboard::class, 'analyzeConflicts'])->name('analyze');
         
         // New Features

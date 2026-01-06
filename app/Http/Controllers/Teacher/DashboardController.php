@@ -59,10 +59,91 @@ class DashboardController extends Controller
 
         $currentMoodStats = $moodMap[$dominantMood] ?? $moodMap['neutral'];
 
+        // Calculate percentages for the view
+        $totalMoodsCount = $todayMoods->sum('total');
+        $moodPercentages = [];
+        
+        if ($totalMoodsCount > 0) {
+            foreach ($todayMoods as $mood) {
+                $moodPercentages[$mood->mood] = ($mood->total / $totalMoodsCount) * 100;
+            }
+        }
+
         // 3. Behavior Alerts -> Refined to use Risk Score > 30 OR pattern
         $riskStudents = User::where('role', 'student')
             ->where('risk_score', '>', 30) // Use the new Risk Logic
             ->get();
+
+        // --- NEW: Critical Alerts (Siswa Perlu Perhatian Segera) ---
+        // Logic: Students with negative journals in last 3 days
+        $negativeKeywords = ['takut', 'benci', 'marah', 'sedih', 'sakit', 'bullied', 'nyindir', 'bunuh diri', 'mati'];
+        $criticalStudents = User::where('role', 'student')
+            ->whereHas('journals', function($q) use ($negativeKeywords) {
+                $q->where('created_at', '>=', now()->subDays(3))
+                  ->where(function($subQ) use ($negativeKeywords) {
+                      $subQ->whereIn('mood', ['sad', 'angry'])
+                           ->orWhere(function($contentQ) use ($negativeKeywords) {
+                               foreach($negativeKeywords as $k) {
+                                   $contentQ->orWhere('content', 'LIKE', "%$k%");
+                               }
+                           });
+                  });
+            })
+            ->with(['journals' => function($q) {
+                $q->latest()->limit(1);
+            }])
+            ->limit(4)
+            ->get();
+
+        // --- NEW: Mood Trends (Last 7 Days) for Chart ---
+        $endDate = now();
+        $startDate = now()->subDays(6);
+        $moodTrendsData = Journal::whereBetween('created_at', [$startDate->startOfDay(), $endDate->endOfDay()])
+            ->selectRaw('DATE(created_at) as date, mood, COUNT(*) as count')
+            ->groupBy('date', 'mood')
+            ->orderBy('date')
+            ->get();
+            
+        // Prepare data structure for Chart.js
+        $chartData = [
+            'labels' => [],
+            'datasets' => [
+                'happy' => [],
+                'calm' => [],
+                'neutral' => [],
+                'sad' => [],
+                'angry' => []
+            ]
+        ];
+
+        // Fill last 7 days labels
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i)->format('Y-m-d');
+            $chartData['labels'][] = now()->subDays($i)->format('d M');
+            
+            foreach(['happy', 'calm', 'neutral', 'sad', 'angry'] as $m) {
+                $count = $moodTrendsData->where('date', $date)->where('mood', $m)->first()->count ?? 0;
+                $chartData['datasets'][$m][] = $count;
+            }
+        }
+
+        // --- NEW: AI Weekly Summary (Mock Logic for MVP) ---
+        $weeklyAiSummary = "Kondisi kelas relatif stabil.";
+        $sadCount = array_sum($chartData['datasets']['sad']);
+        $angryCount = array_sum($chartData['datasets']['angry']);
+        
+        if ($criticalStudents->count() > 0) {
+            $weeklyAiSummary = "Perhatian diperlukan: " . $criticalStudents->count() . " siswa menunjukkan indikasi stres minggu ini. ";
+            if ($angryCount > $sadCount) {
+                $weeklyAiSummary .= "Tren emosi dominan mengarah ke iritabilitas/kemarahan.";
+            } else {
+                $weeklyAiSummary .= "Kecenderungan emosional mengarah pada kesedihan atau kelelahan.";
+            }
+        } elseif ($sadCount + $angryCount > 10) {
+            $weeklyAiSummary = "Tingkat stres kelas sedikit meningkat menjelang akhir pekan. Disarankan untuk mengadakan sesi relaksasi ringan.";
+        } else {
+            $weeklyAiSummary = "Suasana kelas positif minggu ini. Mayoritas siswa dalam kondisi tenang dan bahagia.";
+        }
 
         // 4. Recent Activities (Journal Entries)
         $recentActivities = Journal::with('user')
@@ -76,8 +157,45 @@ class DashboardController extends Controller
             'todayMoods',
             'riskStudents', 
             'recentActivities',
-            'moodMap'
+            'moodMap',
+            'moodPercentages',
+            'criticalStudents', // NEW
+            'chartData',      // NEW
+            'weeklyAiSummary' // NEW
         ));
+    }
+
+    public function journals(Request $request)
+    {
+        $query = Journal::with(['user'])
+            ->whereHas('user', function($q) {
+                $q->where('role', 'student');
+            })
+            ->orderBy('created_at', 'desc');
+        
+        // Filter by student name/ID
+        if ($request->filled('student')) {
+            $query->where('user_id', $request->student);
+        }
+        
+        // Filter by mood
+        if ($request->filled('mood')) {
+            $query->where('mood', $request->mood);
+        }
+        
+        $journals = $query->paginate(20);
+        $students = User::where('role', 'student')->orderBy('name')->get();
+        
+        // Reuse mood map
+        $moodMap = [
+            'happy' => ['emoji' => '😄', 'label' => 'Happy', 'color' => 'text-yellow-500', 'bg' => 'bg-yellow-50'],
+            'calm' => ['emoji' => '😌', 'label' => 'Calm', 'color' => 'text-blue-500', 'bg' => 'bg-blue-50'],
+            'neutral' => ['emoji' => '😐', 'label' => 'Neutral', 'color' => 'text-slate-500', 'bg' => 'bg-slate-50'],
+            'sad' => ['emoji' => '😢', 'label' => 'Sad', 'color' => 'text-purple-500', 'bg' => 'bg-purple-50'],
+            'angry' => ['emoji' => '😠', 'label' => 'Angry', 'color' => 'text-red-500', 'bg' => 'bg-red-50'],
+        ];
+        
+        return view('teacher.journals', compact('journals', 'students', 'moodMap'));
     }
 
     // --- New Features Methods ---
@@ -85,7 +203,6 @@ class DashboardController extends Controller
     public function riskOverview()
     {
         // Calculate risks for all students (Demo purpose: ideally run via Job/Command)
-        // Added 10-second delay to prevent rate limiting
         $students = User::where('role', 'student')->get();
         $count = 0;
         foreach($students as $student) {

@@ -6,30 +6,43 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center gap-2 group">
-                        <img src="{{ asset('images/serenity-hub-logo.png') }}" class="w-10 h-10 transition-transform group-hover:scale-110" alt="Logo">
-                        <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-purple-600">
-                            SerenityHub
+                        <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">M</div>
+                        <span class="text-xl font-bold text-teal-700 tracking-wide">
+                            MindCare
                         </span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-6 sm:-my-px sm:ms-12 sm:flex items-center h-full">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('dashboard') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    
-                    <x-nav-link :href="route('mood.check')" :active="request()->routeIs('mood.check')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('mood.check') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        {{ __('Mood Check') }}
-                    </x-nav-link>
-                    
-                    <x-nav-link :href="route('journal.index')" :active="request()->routeIs('journal.index')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('journal.index') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
-                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                        {{ __('Journal') }}
-                    </x-nav-link>
-
+                    @if(Auth::user()->role === 'teacher')
+                        {{-- Teacher Navigation --}}
+                        <x-nav-link :href="route('teacher.dashboard')" :active="request()->routeIs('teacher.dashboard')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('teacher.dashboard') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            Dashboard Ringkasan
+                        </x-nav-link>
+                        
+                        <x-nav-link :href="route('teacher.journals')" :active="request()->routeIs('teacher.journals')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('teacher.journals') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            Log Jurnal Siswa
+                        </x-nav-link>
+                    @else
+                        {{-- Student Navigation --}}
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('dashboard') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        
+                        <x-nav-link :href="route('mood.check')" :active="request()->routeIs('mood.check')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('mood.check') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            {{ __('Mood Check') }}
+                        </x-nav-link>
+                        
+                        <x-nav-link :href="route('journal.index')" :active="request()->routeIs('journal.index')" class="h-10 px-4 rounded-full flex items-center gap-2 transition-all hover:bg-gray-50 {{ request()->routeIs('journal.index') ? 'bg-teal-50 text-teal-700 border-none font-semibold' : 'text-gray-500 border-none' }}">
+                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            {{ __('Journal') }}
+                        </x-nav-link>
+                    @endif
 
                 </div>
             </div>

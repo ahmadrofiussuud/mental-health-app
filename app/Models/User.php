@@ -78,4 +78,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Buyer::class);
     }
+
+    public function journals()
+    {
+        return $this->hasMany(Journal::class);
+    }
 }
