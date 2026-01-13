@@ -30,7 +30,7 @@ class ConflictSeeder extends Seeder
                 'name' => 'Budi Santoso', // Let's call him Budi
                 'password' => Hash::make('password'),
                 'role' => 'student',
-                'risk_score' => 0
+                'risk_score' => 0   
             ]
         );
 
