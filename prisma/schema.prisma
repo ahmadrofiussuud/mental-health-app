@@ -1,0 +1,173 @@
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum Mood {
+  HAPPY
+  CALM
+  NEUTRAL
+  SAD
+  ANGRY
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // Hashed
+  role          Role      @default(STUDENT)
+  
+  // Relations
+  classId       String?
+  class         Class?    @relation(fields: [classId], references: [id])
+  
+  journals      Journal[]
+  moodLogs      MoodLog[]
+  riskProfile   RiskProfile?
+  
+  // Audit Logs (as actor)
+  actions       AuditLog[]
+  
+  // NextAuth Relations
+  accounts      Account[]
+  sessions      Session[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([email])
+  @@index([classId])
+}
+
+model Class {
+  id        String   @id @default(cuid())
+  name      String
+  teacherId String?
+  students  User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Journal {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  content     String   @db.Text
+  isAnonymous Boolean  @default(false)
+  mood        Mood?
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model MoodLog {
+  id        String   @id @default(cuid())
+  userId    String
+  mood      Mood
+  note      String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model RiskProfile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  currentScore    Int       @default(0) // 0-100
+  riskLevel       RiskLevel @default(LOW)
+  lastAssessment  DateTime?
+  summary         String?   @db.Text // AI Summary masking PII if needed
+  
+  riskFactors     Json?     // ["isolation", "academic_stress"]
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  assessments     RiskAssessment[]
+}
+
+model RiskAssessment {
+  id            String      @id @default(cuid())
+  riskProfileId String
+  score         Int
+  reason        String      @db.Text
+  factors       Json?
+  createdAt     DateTime    @default(now())
+  
+  riskProfile   RiskProfile @relation(fields: [riskProfileId], references: [id], onDelete: Cascade)
+
+  @@index([riskProfileId])
+}
+
+model AuditLog {
+  id              String   @id @default(cuid())
+  actorId         String
+  targetUserId    String?
+  action          String   // "VIEW_JOURNAL", "RUN_ASSESSMENT", "UPDATE_USER"
+  resourceId      String?  // ID of the journal or entity accessed
+  details         Json?    // { "ip": "...", "userAgent": "..." }
+  createdAt       DateTime @default(now())
+  
+  actor           User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([actorId])
+  @@index([targetUserId])
+}
+
+// NextAuth Models (Adapter)
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}

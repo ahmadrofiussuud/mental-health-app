@@ -1,294 +1,91 @@
-# 🧠 SerenityHub - Mental Health App
+# SerenityHub (Next.js MVP)
 
-## 📖 Introduction
-SerenityHub adalah aplikasi web untuk mendukung kesehatan mental siswa di sekolah. Aplikasi ini menyediakan fitur jurnal pribadi, mood tracking, konseling dengan guru BK, dan AI-powered analysis untuk membantu siswa mengelola kesehatan mental mereka.
+Aplikasi kesehatan mental berbasis AI untuk sekolah, dimigrasikan ke Next.js & Serverless.
 
-## 🎯 Features
-- ✍️ **Personal Journal** - Siswa dapat menulis jurnal harian (publik atau anonim)
-- 😊 **Mood Detection** - Track mood dengan AI (face & voice analysis)
-- 💬 **Student-Teacher Chat** - Komunikasi langsung dengan guru BK
-- 🤖 **AI Analysis** - Analisa psikologis otomatis menggunakan Gemini AI
-- 📊 **Teacher Dashboard** - Monitor kesehatan mental siswa secara keseluruhan
-- 🔒 **Privacy First** - Opsi jurnal anonim untuk privasi siswa
+## ⚠️ PERINGATAN PENTING
+**JANGAN GUNAKAN AKUN DEFAULT DI PRODUCTION!**
+Seed data hanya untuk keperluan development. Ganti password segera atau gunakan fitur Admin untuk membuat akun baru yang aman.
 
-## ⚙️ Tech Stack
-- **Backend**: Laravel 12 (PHP 8.2+)
-- **Frontend**: Blade Templates + AlpineJS + TailwindCSS
-- **Database**: MySQL
-- **AI**: Google Gemini API
-- **Build Tool**: Vite
-
----
+## 🛠 Tech Stack
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript
+- **Database**: MySQL (via Prisma)
+- **Auth**: NextAuth.js v5 (Credentials)
+- **AI**: Google Gemini (`gemini-2.0-flash`)
+- **Rate Limit**: Upstash Redis
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- PHP >= 8.2
-- Composer
-- Node.js & NPM
-- MySQL/MariaDB
-- Git
-
-### Installation Steps
-
-#### 1️⃣ Clone Repository
-```bash
-git clone <repository-url>
-cd Project-Kesehatan-mental
-```
-
-#### 2️⃣ Install Dependencies
-```bash
-# Install PHP dependencies
-composer install
-
-# Install Node dependencies
-npm install
-```
-
-#### 3️⃣ Environment Configuration
-```bash
-# Copy environment file
-copy .env.example .env
-```
-
-**Edit `.env` file:**
-```env
-APP_NAME=SerenityHub
-APP_URL=http://localhost:8000
-
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=mental_health_db
-DB_USERNAME=root
-DB_PASSWORD=
-
-# Get API key from: https://makersuite.google.com/app/apikey
-GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-#### 4️⃣ Generate Application Key
-```bash
-php artisan key:generate
-```
-
-#### 5️⃣ Create Database
-Buat database baru di MySQL:
-```sql
-CREATE DATABASE mental_health_db;
-```
-
-#### 6️⃣ Run Migrations & Seed Database
-```bash
-# Run migrations
-php artisan migrate
-
-# Seed database with sample data
-php artisan db:seed
-```
-
-#### 7️⃣ Compile Assets
-```bash
-# For development
-npm run dev
-
-# OR for production
-npm run build
-```
-
-#### 8️⃣ Start Development Server
-```bash
-php artisan serve
-```
-
-Aplikasi akan berjalan di: **http://127.0.0.1:8000**
-
----
-
-## 👤 Default Login Credentials
-
-Setelah seeding, gunakan kredensial berikut untuk login:
-
-### Student Account
-- **Email**: `student@school.com`
-- **Password**: `password`
-- **Role**: Student (Azid)
-- **Features**: Journal writing, mood check, chat with teacher
-
-### Teacher Account
-- **Email**: `teacher@school.com`
-- **Password**: `password`
-- **Role**: Teacher (Guru BK)
-- **Features**: Monitor students, AI analysis, conflict detection
-
-### Admin Account
-- **Email**: `admin@school.com`
-- **Password**: `password`
-- **Role**: Administrator
-- **Features**: User management, system configuration
-
----
-
-## 📦 Database Seeding
-
-Seeder akan otomatis membuat:
-- ✅ 3 default users (student, teacher, admin)
-- ✅ 4 sample journals untuk student
-- ✅ Sample data dengan berbagai mood (happy, sad, calm, neutral)
-
-Untuk reset database dan seed ulang:
-```bash
-php artisan migrate:fresh --seed
-```
-
-⚠️ **Warning**: Perintah ini akan menghapus semua data yang ada!
-
----
-
-## 🛠️ Development
-
-### Run Development Server
-```bash
-# Run Laravel server + Vite (hot reload)
-npm run dev
-
-# In another terminal
-php artisan serve
-```
-
-### Clear Cache (Jika ada masalah)
-```bash
-php artisan optimize:clear
-php artisan view:clear
-php artisan route:clear
-php artisan config:clear
-```
-
-### Compile Assets for Production
-```bash
-npm run build
-```
-
----
-
-## 📁 Project Structure
-
-```
-Project-Kesehatan-mental/
-├── app/
-│   ├── Http/Controllers/
-│   │   ├── Student/DashboardController.php
-│   │   ├── Teacher/DashboardController.php
-│   │   ├── JournalController.php
-│   │   └── MoodDetectionController.php
-│   └── Models/
-│       ├── User.php
-│       └── Journal.php
-├── database/
-│   ├── migrations/
-│   └── seeders/
-│       ├── DatabaseSeeder.php
-│       └── MainSeeder.php
-├── resources/
-│   ├── views/
-│   │   ├── student/dashboard.blade.php
-│   │   ├── teacher/dashboard.blade.php
-│   │   └── journal/index.blade.php
-│   └── css/
-└── public/
-    └── images/
-```
-
----
-
-## 🤝 Team Collaboration
-
-### Untuk Partner/Teman yang Baru Clone:
-
-1. **Clone repository**
-   ```bash
-   git clone <repository-url>
-   cd Project-Kesehatan-mental
-   ```
-
-2. **Jalankan setup lengkap**
-   ```bash
-   composer install
-   npm install
-   copy .env.example .env
-   php artisan key:generate
-   ```
-
-3. **Edit `.env`** - Sesuaikan database & Gemini API key
-
-4. **Setup database**
-   ```bash
-   php artisan migrate --seed
-   ```
-
-5. **Compile & run**
-   ```bash
-   npm run dev
-   php artisan serve
-   ```
-
-6. **Login** menggunakan kredensial di atas
-
----
-
-## 🔑 Gemini API Key Setup
-
-1. Kunjungi: https://makersuite.google.com/app/apikey
-2. Sign in dengan Google Account
-3. Klik "Create API Key"
-4. Copy API key yang dihasilkan
-5. Paste ke `.env`:
-   ```env
-   GEMINI_API_KEY=AIzaSy...
-   ```
-
----
-
-## 📝 Notes
-
-- Semua password default adalah `password` (untuk development only)
-- Jangan lupa menambahkan Gemini API key untuk fitur AI
-- Gunakan `php artisan migrate:fresh --seed` untuk reset database
-- Assets (gambar school bus, logo, dll) sudah ter-commit di `/public/images`
-
----
-
-## 🐛 Troubleshooting
-
-### Masalah: Dashboard kosong/broken
-**Solusi:**
-```bash
-git pull
-php artisan optimize:clear
-npm run dev
-# Hard reload browser: Ctrl+Shift+R
-```
-
-### Masalah: Error 500 / Gemini API
-**Solusi:**
-- Pastikan `GEMINI_API_KEY` sudah diisi di `.env`
-- Cek API key masih valid
-- Clear config: `php artisan config:clear`
-
-### Masalah: Assets tidak muncul
-**Solusi:**
+### 1. Install Dependencies
 ```bash
 npm install
-npm run build
-php artisan storage:link
 ```
 
----
+### 2. Setup Database (Development)
+Pastikan MySQL berjalan. Copy `.env.example` ke `.env` dan isi credentials.
 
-## 📜 License
-This project is for educational purposes.
+```bash
+# Push schema ke database (Hanya Development)
+npx prisma db push
 
----
+# Seed data awal (Admin, Teacher, Student) - JANGAN DI PRODUCTION
+npx prisma db execute --file prisma/seed.sql
+```
 
-**Happy Coding! 🚀**
+> **Catatan:** `prisma db push` cocok untuk prototyping. Untuk production, gunakan migration flow.
+
+### Setup Database (Production)
+Jika ada perubahan schema, buat migration lokal dulu:
+```bash
+npx prisma migrate dev --name init
+```
+Lalu di Vercel (Build Command), gunakan `npx prisma migrate deploy`.
+
+### 3. Run Development Server
+```bash
+npm run dev
+```
+Buka [http://localhost:3000](http://localhost:3000).
+
+## 🔑 Default Accounts (Seed)
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** | `admin@example.com` | `password` |
+| **Teacher** | `teacher@example.com` | `password` |
+| **Student** | `student@example.com` | `password` |
+
+## 📦 Deployment (Vercel)
+
+1.  **Push ke GitHub**.
+2.  **Import Project di Vercel**.
+3.  **Set Environment Variables**:
+    *   `DATABASE_URL`: Connection string MySQL (PlanetScale/RDS).
+    *   `NEXTAUTH_SECRET`: Generate pakai `openssl rand -base64 32`.
+    *   `NEXTAUTH_URL`: URL Vercel (e.g. `https://serenity-hub.vercel.app`).
+    *   `GOOGLE_GEMINI_API_KEY`: API Key dari Google AI Studio.
+    *   `UPSTASH_REDIS_REST_URL`: Dari Upstash Console.
+    *   `UPSTASH_REDIS_REST_TOKEN`: Dari Upstash Console.
+
+4.  **Build Command**:
+    Disarankan menggunakan custom command untuk memastikan database migrasi berjalan aman:
+    ```bash
+    npx prisma migrate deploy && next build
+    ```
+    
+    > **Penting**: Pastikan file migration (`prisma/migrations`) ikut ter-commit ke repo.
+
+5.  **Install Command**: `npm install`.
+
+## 🛡️ Security Notes
+*   **Password Hashing**: Menggunakan `bcryptjs` (Cost 12).
+*   **Rate Limiting**: Aktif untuk endpoint AI (10 req/menit per user) menggunakan Upstash Redis.
+*   **RBAC**: Middleware membatasi akses route admin/teacher/student.
+*   **IDOR Protection**: Teacher dashboard membatasi view hanya ke student (MVP: currently listing all, should be refined to class-based).
+*   **Audit Logging**: Endpoint sensitif mencatat log ke tabel `AuditLog`.
+
+## 🔧 Troubleshooting
+*   **Database Error**: Pastikan connection string di `DATABASE_URL` benar (termasuk port dan user/pass).
+*   **Prisma Error**: Jika `P1012`, cek `prisma/schema.prisma` dan pastikan konfigurasi `url` mengarah ke `env("DATABASE_URL")`.
+*   **NextAuth Error**: Pastikan `NEXTAUTH_SECRET` dan `NEXTAUTH_URL` diset di Vercel.
+*   **Gemini 429**: Kuota API habis atau rate limit terlampaui. Cek dashboard Google AI Studio.
