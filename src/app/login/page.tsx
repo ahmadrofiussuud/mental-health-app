@@ -21,7 +21,17 @@ export default function LoginPage() {
         if (res?.error) {
             setError("Invalid credentials");
         } else {
-            router.push("/student/dashboard"); // Default redirect, middleware will handle others if needed
+            // Fetch session to check role
+            const response = await fetch("/api/auth/session");
+            const session = await response.json();
+
+            if (session?.user?.role === "TEACHER" || session?.user?.role === "teacher") {
+                router.push("/teacher/dashboard");
+            } else if (session?.user?.role === "ADMIN" || session?.user?.role === "admin") {
+                router.push("/admin/dashboard");
+            } else {
+                router.push("/student/dashboard");
+            }
             router.refresh();
         }
     };

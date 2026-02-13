@@ -44,49 +44,64 @@ export default async function StudentDashboard() {
         <div className="py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
                 {/* Hero Banner */}
-                <div className="relative w-full h-[380px] rounded-[3rem] overflow-hidden shadow-sm group">
-                    {/* Background Image */}
-                    <div className="absolute inset-0 bg-slate-100">
+                <div className="relative w-full rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-sm group">
+                    {/* Background Image Container - Absolute on Desktop to allow overlay */}
+                    <div className="absolute inset-0 bg-slate-100 hidden md:block">
                         <Image
                             src="/images/school-bus.png"
                             alt="School Bus"
                             fill
                             className="object-cover object-center"
+                            priority
                         />
+                        <div className="absolute inset-0 bg-black/10" />
                     </div>
 
-                    {/* Floating Card */}
-                    <div className="absolute inset-y-0 left-0 md:left-12 flex items-center z-10 w-full md:w-auto">
-                        <div className="bg-white/95 backdrop-blur-sm p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/50 max-w-xl mx-4 md:mx-0 transform transition duration-500 hover:scale-[1.01]">
-                            <div className="inline-flex items-center gap-2 mb-5 bg-teal-50 px-4 py-1.5 rounded-full border border-teal-100">
-                                <span className="relative flex h-3 w-3">
+                    {/* Mobile Image - Relative */}
+                    <div className="relative h-56 w-full md:hidden bg-slate-100">
+                        <Image
+                            src="/images/school-bus.png"
+                            alt="School Bus"
+                            fill
+                            className="object-cover object-center"
+                            priority
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                    </div>
+
+                    {/* Content Container - Defines height on Desktop via Padding */}
+                    <div className="relative z-10 flex flex-col md:flex-row items-center md:min-h-[420px] px-4 pb-6 md:p-12">
+                        {/* Card */}
+                        <div className="bg-white/95 backdrop-blur-sm p-6 md:p-10 rounded-[2rem] shadow-xl md:shadow-2xl border border-white/50 w-full max-w-xl -mt-10 md:mt-0 transform transition duration-500 hover:scale-[1.01]">
+                            <div className="inline-flex items-center gap-2 mb-4 bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
+                                <span className="relative flex h-2.5 w-2.5">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal-500"></span>
                                 </span>
-                                <span className="text-xs font-bold text-teal-600 uppercase tracking-widest">
+                                <span className="text-[10px] font-bold text-teal-600 uppercase tracking-widest">
                                     Student Portal
                                 </span>
                             </div>
 
-                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-tight tracking-tight">
+                            <h1 className="text-2xl md:text-4xl font-black text-slate-900 mb-3 md:mb-4 leading-tight tracking-tight">
                                 Hello, <span className="text-indigo-600">{session.user.name}</span>! 🎒
                             </h1>
 
-                            <p className="text-slate-600 font-medium text-base mb-6 leading-relaxed border-l-4 border-indigo-100 pl-4 py-1">
+                            <p className="text-slate-600 font-medium text-sm md:text-base mb-6 leading-relaxed border-l-4 border-indigo-100 pl-4 py-1">
                                 "Setiap hari adalah awal yang baru. Teruslah belajar, berkembang, dan percaya pada dirimu sendiri!"
                             </p>
 
-                            <div className="flex flex-col sm:flex-row gap-4">
+                            <div className="flex flex-col sm:flex-row gap-3">
                                 <Link
                                     href="/student/mood"
-                                    className="inline-flex justify-center items-center gap-2 bg-[#4F46E5] hover:bg-[#4338ca] text-white px-8 py-4 rounded-2xl font-bold text-base transition shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transform active:scale-95"
+                                    className="inline-flex justify-center items-center gap-2 bg-[#4F46E5] hover:bg-[#4338ca] text-white px-6 py-3.5 rounded-xl font-bold text-sm transition shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transform active:scale-95"
                                 >
                                     🙂 Cek Mood
                                 </Link>
 
                                 <Link
                                     href="/student/journals"
-                                    className="inline-flex justify-center items-center gap-2 bg-white border-2 border-slate-100 text-slate-700 hover:bg-slate-50 hover:border-slate-200 px-8 py-4 rounded-2xl font-bold text-base transition transform active:scale-95 shadow-sm"
+                                    className="inline-flex justify-center items-center gap-2 bg-white border-2 border-slate-100 text-slate-700 hover:bg-slate-50 hover:border-slate-200 px-6 py-3.5 rounded-xl font-bold text-sm transition transform active:scale-95 shadow-sm"
                                 >
                                     📝 Tulis Jurnal
                                 </Link>

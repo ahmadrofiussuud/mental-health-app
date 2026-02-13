@@ -63,3 +63,55 @@ export async function getTeacherDashboardSummary() {
         return "Maaf, fitur analisis AI sedang tidak dapat diakses saat ini.";
     }
 }
+
+// ... (imports remain same)
+
+export async function analyzeJournalContent(content: string) {
+    noStore();
+    try {
+        if (!process.env.GEMINI_API_KEY && !process.env.GOOGLE_GEMINI_API_KEY) {
+            throw new Error("API Key is missing. Please check .env file.");
+        }
+
+        const prompt = `
+            Sebagai psikolog sekolah yang profesional dan empatik, analisislah jurnal siswa berikut ini.
+            Berikan respon HANYA dalam format JSON valid (tanpa markdown code block, tanpa penjelasan tambahan) dengan struktur:
+            {
+                "emotion": "Emosi dominan (misal: Happy, Sad, Anxious, Angry, Neutral)",
+                "riskLevel": "Level risiko (Low, Medium, High)",
+                "summary": "Ringkasan singkat 1 kalimat",
+                "suggestions": ["Saran 1", "Saran 2", "Saran 3"]
+            }
+
+            Isi Jurnal:
+            "${content}"
+        `;
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        let text = response.text();
+
+        // Robust cleanup for markdown code blocks
+        text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+
+        // Try to parse JSON
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error("JSON Parse Error. Raw text:", text);
+            // Fallback: simple regex extraction if JSON fails
+            return {
+                emotion: "Unknown",
+                riskLevel: "Low",
+                summary: "Gagal memproses analisis otomatis. Silakan coba lagi.",
+                suggestions: []
+            };
+        }
+    } catch (error: any) {
+        console.error("Error analyzing journal:", error);
+        return {
+            error: true,
+            message: error.message || "Terjadi kesalahan saat menghubungi AI."
+        };
+    }
+}

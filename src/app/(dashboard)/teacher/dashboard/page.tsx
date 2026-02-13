@@ -102,21 +102,22 @@ export default function TeacherDashboard() {
                         </div>
 
                         {/* Stats Cards */}
-                        <div className="flex flex-wrap items-stretch gap-4">
-                            <div className="backdrop-blur-md bg-white/10 px-8 py-5 rounded-3xl border-2 border-white/20 shadow-lg shadow-black/20 min-w-[160px]">
-                                <p className="text-4xl font-bold text-white mb-1">5</p>
-                                <p className="text-sm text-slate-200 font-medium uppercase tracking-wide">Siswa Berisiko</p>
+                        {/* Stats Cards */}
+                        <div className="grid grid-cols-2 md:flex md:flex-row items-stretch gap-4">
+                            <div className="backdrop-blur-md bg-white/10 px-6 py-5 rounded-3xl border-2 border-white/20 shadow-lg shadow-black/20 md:min-w-[160px] flex flex-col justify-center">
+                                <p className="text-3xl md:text-4xl font-bold text-white mb-1">5</p>
+                                <p className="text-xs md:text-sm text-slate-200 font-medium uppercase tracking-wide">Siswa Berisiko</p>
                             </div>
-                            <div className="backdrop-blur-md bg-white/10 px-8 py-5 rounded-3xl border-2 border-white/20 shadow-lg shadow-black/20 min-w-[160px]">
-                                <p className="text-4xl font-bold text-white flex items-center gap-2 mb-1">
-                                    <span className="text-3xl">🙂</span>
+                            <div className="backdrop-blur-md bg-white/10 px-6 py-5 rounded-3xl border-2 border-white/20 shadow-lg shadow-black/20 md:min-w-[160px] flex flex-col justify-center">
+                                <p className="text-3xl md:text-4xl font-bold text-white flex items-center gap-2 mb-1">
+                                    <span className="text-2xl md:text-3xl">🙂</span>
                                     <span>Calm</span>
                                 </p>
-                                <p className="text-sm text-slate-200 font-medium uppercase tracking-wide">Mood Dominan</p>
+                                <p className="text-xs md:text-sm text-slate-200 font-medium uppercase tracking-wide">Mood Dominan</p>
                             </div>
-                            <div className="backdrop-blur-md bg-white/10 px-8 py-5 rounded-3xl border-2 border-white/20 shadow-lg shadow-black/20 min-w-[160px]">
-                                <p className="text-4xl font-bold text-white mb-1">32</p>
-                                <p className="text-sm text-slate-200 font-medium uppercase tracking-wide">Total Siswa</p>
+                            <div className="col-span-2 md:col-span-1 backdrop-blur-md bg-white/10 px-6 py-5 rounded-3xl border-2 border-white/20 shadow-lg shadow-black/20 md:min-w-[160px] flex flex-col justify-center items-center">
+                                <p className="text-3xl md:text-4xl font-bold text-white mb-1">32</p>
+                                <p className="text-xs md:text-sm text-slate-200 font-medium uppercase tracking-wide">Total Siswa</p>
                             </div>
                         </div>
                     </div>

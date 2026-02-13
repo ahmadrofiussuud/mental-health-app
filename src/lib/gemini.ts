@@ -8,5 +8,5 @@ if (!apiKey) {
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
-// Use a model that supports text generation (e.g., gemini-1.5-flash which is fast and cheap)
-export const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// Use a model that supports text generation. Using gemini-2.5-flash as confirmed by script.
+export const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
