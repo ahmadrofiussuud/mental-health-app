@@ -1,169 +1,136 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import Image from "next/image";
 import Link from "next/link";
-import prisma from "@/lib/prisma";
-
+import { db } from "@/lib/db";
 
 async function getStudentStats(userId: string) {
-    const totalEntries = await prisma.journal.count({
+    const totalEntries = await db.journal.count({ where: { userId } });
+    const journals = await db.journal.findMany({
         where: { userId },
-    });
-
-    // Calculate streak (simplified version)
-    const journals = await prisma.journal.findMany({
-        where: { userId },
-        select: { createdAt: true },
         orderBy: { createdAt: "desc" },
     });
-
-    // Basic streak calc would go here, returning 0 for now to match MVP speed
     const streak = journals.length > 0 ? 1 : 0;
-
     return { totalEntries, streak };
 }
 
-async function getDailyWisdom() {
-    // Static for now, can be dynamic later
-    return {
-        emoji: "🌟",
-        title: "Percaya Diri",
-        quote: "Kekuatan terbesar bukan pada tidak pernah jatuh, tapi bangkit setiap kali kita jatuh.",
-    };
-}
+const DAILY_QUOTES = [
+    { emoji: "🌟", title: "Percaya Diri", quote: "Kekuatan terbesar bukan pada tidak pernah jatuh, tapi bangkit setiap kali kita jatuh." },
+    { emoji: "🌱", title: "Bertumbuh", quote: "Setiap langkah kecil yang kamu ambil hari ini membawa perubahan besar di masa depan." },
+    { emoji: "💪", title: "Kuat", quote: "Kamu lebih kuat dari yang kamu pikirkan. Teruslah melangkah." },
+];
 
 export default async function StudentDashboard() {
     const session = await getServerSession(authOptions);
     if (!session) return null;
 
     const stats = await getStudentStats(session.user.id);
-    const wisdom = await getDailyWisdom();
+    const wisdom = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
 
     return (
-        <div className="py-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-                {/* Hero Banner */}
-                <div className="relative w-full rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-sm group">
-                    {/* Background Image Container - Absolute on Desktop to allow overlay */}
-                    <div className="absolute inset-0 bg-slate-100 hidden md:block">
-                        <Image
-                            src="/images/school-bus.png"
-                            alt="School Bus"
-                            fill
-                            className="object-cover object-center"
-                            priority
-                        />
-                        <div className="absolute inset-0 bg-black/10" />
-                    </div>
+        <div className="min-h-screen bg-gray-50">
+            <div className="max-w-4xl mx-auto px-4 py-6 sm:py-10 space-y-6 sm:space-y-8">
 
-                    {/* Mobile Image - Relative */}
-                    <div className="relative h-56 w-full md:hidden bg-slate-100">
-                        <Image
-                            src="/images/school-bus.png"
-                            alt="School Bus"
-                            fill
-                            className="object-cover object-center"
-                            priority
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                    </div>
+                {/* Hero Welcome Card */}
+                <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-teal-500 via-teal-600 to-indigo-600 p-6 sm:p-10 text-white shadow-xl">
+                    {/* Decorative blobs */}
+                    <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+                    <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-indigo-400/20 rounded-full blur-2xl"></div>
 
-                    {/* Content Container - Defines height on Desktop via Padding */}
-                    <div className="relative z-10 flex flex-col md:flex-row items-center md:min-h-[420px] px-4 pb-6 md:p-12">
-                        {/* Card */}
-                        <div className="bg-white/95 backdrop-blur-sm p-6 md:p-10 rounded-[2rem] shadow-xl md:shadow-2xl border border-white/50 w-full max-w-xl -mt-10 md:mt-0 transform transition duration-500 hover:scale-[1.01]">
-                            <div className="inline-flex items-center gap-2 mb-4 bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
-                                <span className="relative flex h-2.5 w-2.5">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal-500"></span>
-                                </span>
-                                <span className="text-[10px] font-bold text-teal-600 uppercase tracking-widest">
-                                    Student Portal
-                                </span>
-                            </div>
+                    <div className="relative z-10">
+                        <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full mb-4">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+                            </span>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-white/90">Student Portal</span>
+                        </div>
 
-                            <h1 className="text-2xl md:text-4xl font-black text-slate-900 mb-3 md:mb-4 leading-tight tracking-tight">
-                                Hello, <span className="text-indigo-600">{session.user.name}</span>! 🎒
-                            </h1>
+                        <h1 className="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight">
+                            Halo, {session.user.name}! 👋
+                        </h1>
+                        <p className="text-white/80 text-sm sm:text-base max-w-md mb-6 leading-relaxed">
+                            Apa kabar hari ini? Yuk cek mood kamu dan tulis jurnal untuk memantau kesehatan mentalmu.
+                        </p>
 
-                            <p className="text-slate-600 font-medium text-sm md:text-base mb-6 leading-relaxed border-l-4 border-indigo-100 pl-4 py-1">
-                                &quot;Setiap hari adalah awal yang baru. Teruslah belajar, berkembang, dan percaya pada dirimu sendiri!&quot;
-                            </p>
-
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <Link
-                                    href="/student/mood"
-                                    className="inline-flex justify-center items-center gap-2 bg-[#4F46E5] hover:bg-[#4338ca] text-white px-6 py-3.5 rounded-xl font-bold text-sm transition shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transform active:scale-95"
-                                >
-                                    🙂 Cek Mood
-                                </Link>
-
-                                <Link
-                                    href="/student/journals"
-                                    className="inline-flex justify-center items-center gap-2 bg-white border-2 border-slate-100 text-slate-700 hover:bg-slate-50 hover:border-slate-200 px-6 py-3.5 rounded-xl font-bold text-sm transition transform active:scale-95 shadow-sm"
-                                >
-                                    📝 Tulis Jurnal
-                                </Link>
-                            </div>
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <Link
+                                href="/student/mood"
+                                className="inline-flex justify-center items-center gap-2 bg-white text-teal-700 px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-black/10 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 active:scale-95"
+                            >
+                                😊 Cek Mood
+                            </Link>
+                            <Link
+                                href="/student/journals"
+                                className="inline-flex justify-center items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/30 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-white/25 transition-all duration-200 active:scale-95"
+                            >
+                                📝 Tulis Jurnal
+                            </Link>
                         </div>
                     </div>
                 </div>
 
-                {/* Dashboard Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Stats Section */}
-                    <div className="lg:col-span-2 space-y-6">
-                        <div className="flex items-center gap-3 pl-2">
-                            <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                {/* Stats Grid */}
+                <div>
+                    <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 text-sm">📊</span>
+                        Perjalananmu
+                    </h2>
+                    <div className="grid grid-cols-2 gap-4">
+                        {/* Streak Card */}
+                        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-5 sm:p-6 text-white shadow-lg shadow-orange-200/50">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl sm:text-2xl">🔥</div>
+                                <span className="bg-white/20 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Streak</span>
                             </div>
-                            <h2 className="text-2xl font-bold text-slate-800">Perjalananmu</h2>
+                            <h3 className="text-4xl sm:text-5xl font-black leading-none mb-1">{stats.streak}</h3>
+                            <p className="text-orange-100 text-xs sm:text-sm font-medium">Hari berturut-turut</p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Streak Card */}
-                            <div className="relative bg-gradient-to-br from-[#F97316] to-[#EA580C] rounded-[2rem] p-8 text-white h-64 shadow-xl shadow-orange-200/50 hover:shadow-2xl transition duration-300 overflow-hidden group">
-                                <div className="flex justify-between items-start mb-8 relative z-10">
-                                    <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl shadow-inner border border-white/10">🔥</div>
-                                    <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-white/10">Streak</span>
-                                </div>
-                                <div className="absolute bottom-8 left-8 relative z-10">
-                                    <h3 className="text-7xl font-black mb-2 tracking-tighter leading-none">{stats.streak}</h3>
-                                    <p className="text-orange-50 font-bold text-sm opacity-90">Hari berturut-turut!</p>
-                                </div>
+                        {/* Entries Card */}
+                        <div className="bg-gradient-to-br from-violet-500 to-violet-600 rounded-2xl p-5 sm:p-6 text-white shadow-lg shadow-violet-200/50">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl sm:text-2xl">✍️</div>
+                                <span className="bg-white/20 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Jurnal</span>
                             </div>
-
-                            {/* Entries Card */}
-                            <div className="relative bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] rounded-[2rem] p-8 text-white h-64 shadow-xl shadow-purple-200/50 hover:shadow-2xl transition duration-300 overflow-hidden group">
-                                <div className="flex justify-between items-start mb-8 relative z-10">
-                                    <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl shadow-inner border border-white/10">✍️</div>
-                                    <span className="bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-white/10">Jurnal</span>
-                                </div>
-                                <div className="absolute bottom-8 left-8 relative z-10">
-                                    <h3 className="text-7xl font-black mb-2 tracking-tighter leading-none">{stats.totalEntries}</h3>
-                                    <p className="text-purple-50 font-bold text-sm opacity-90">Total Jurnal Ditulis</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Wisdom Section */}
-                    <div className="space-y-6">
-                        <div className="flex items-center gap-3 pl-2">
-                            <div className="p-2 bg-yellow-100 rounded-lg text-yellow-600">
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            </div>
-                            <h2 className="text-2xl font-bold text-slate-800">Kata Bijak</h2>
-                        </div>
-                        <div className="bg-[#FEFCE8] rounded-[2rem] p-8 h-64 flex flex-col justify-center items-center text-center shadow-lg shadow-yellow-100/50 border border-yellow-100 relative overflow-hidden group hover:shadow-xl transition duration-300">
-                            <div className="relative z-10 w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center text-4xl mb-6 transform group-hover:-rotate-12 transition duration-300 ease-out">{wisdom.emoji}</div>
-                            <div className="relative z-10 px-2">
-                                <h3 className="text-xl font-black text-slate-800 mb-2">{wisdom.title}</h3>
-                                <p className="text-slate-600 font-medium text-sm leading-relaxed">&quot;{wisdom.quote}&quot;</p>
-                            </div>
+                            <h3 className="text-4xl sm:text-5xl font-black leading-none mb-1">{stats.totalEntries}</h3>
+                            <p className="text-violet-100 text-xs sm:text-sm font-medium">Total ditulis</p>
                         </div>
                     </div>
                 </div>
+
+                {/* Wisdom Card */}
+                <div>
+                    <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 text-sm">💡</span>
+                        Kata Bijak Hari Ini
+                    </h2>
+                    <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 sm:p-8 shadow-md border border-amber-100/50 text-center">
+                        <div className="w-14 h-14 bg-white rounded-2xl shadow-md flex items-center justify-center text-3xl mx-auto mb-4">{wisdom.emoji}</div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-2">{wisdom.title}</h3>
+                        <p className="text-gray-600 text-sm leading-relaxed max-w-md mx-auto">&quot;{wisdom.quote}&quot;</p>
+                    </div>
+                </div>
+
+                {/* Quick Access */}
+                <div>
+                    <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span className="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center text-teal-600 text-sm">⚡</span>
+                        Akses Cepat
+                    </h2>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Link href="/student/mood" className="group bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:border-teal-200 transition-all duration-200">
+                            <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">😊</div>
+                            <h4 className="font-bold text-gray-800 text-sm mb-1">Mood Check</h4>
+                            <p className="text-gray-400 text-xs">Catat suasana hatimu</p>
+                        </Link>
+                        <Link href="/student/journals" className="group bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
+                            <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">📓</div>
+                            <h4 className="font-bold text-gray-800 text-sm mb-1">Jurnal</h4>
+                            <p className="text-gray-400 text-xs">Tulis cerita harimu</p>
+                        </Link>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
