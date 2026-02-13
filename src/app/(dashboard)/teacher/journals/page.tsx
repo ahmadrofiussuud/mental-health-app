@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { id } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { Search, Filter, BookOpen, X, Sparkles, Brain, AlertTriangle, CheckCircle } from "lucide-react";
 import { analyzeJournalContent } from "@/actions/teacher";
 
@@ -10,29 +10,29 @@ import { analyzeJournalContent } from "@/actions/teacher";
 const mockJournals = [
     {
         id: "1",
-        studentName: "Siswa 1",
+        studentName: "Student 1",
         avatar: "S1",
         mood: "Happy",
-        title: "Hari yang menyenangkan",
-        content: "Hari ini saya belajar banyak hal baru di sekolah. Teman-teman sangat membantu. Saya merasa sangat dihargai oleh guru matematika saya karena berhasil menjawab pertanyaan sulit.",
+        title: "A great day",
+        content: "Today I learned many new things at school. My friends were very helpful. I felt very appreciated by my math teacher for answering a difficult question.",
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
     },
     {
         id: "2",
-        studentName: "Siswa 2",
+        studentName: "Student 2",
         avatar: "S2",
         mood: "Sad",
-        title: "Sedikit lelah",
-        content: "Tugas matematika hari ini sangat sulit. Saya merasa sedikit putus asa. Rasanya ingin menyerah saja karena tidak ada yang mengerti kesulitan saya di rumah.",
+        title: "Feeling tired",
+        content: "Today's math assignment was really hard. I feel a bit hopeless. I want to give up because nobody understands how difficult things are at home.",
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
     },
     {
         id: "3",
-        studentName: "Siswa 3",
+        studentName: "Student 3",
         avatar: "S3",
         mood: "Anxious",
-        title: "Ujian besok",
-        content: "Saya sangat gugup menghadapi ujian biologi besok. Semoga bisa mengerjakannya. Tangan saya berkeringat dingin setiap kali memikirkannya.",
+        title: "Exam tomorrow",
+        content: "I'm very nervous about the biology exam tomorrow. I hope I can do it. My palms sweat every time I think about it.",
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48), // 2 days ago
     },
 ];
@@ -74,11 +74,11 @@ export default function TeacherJournalsPage() {
             } else if (result && result.error) {
                 setError(result.message);
             } else {
-                setError("Gagal mendapatkan respon dari AI.");
+                setError("Failed to get response from AI.");
             }
         } catch (error) {
             console.error(error);
-            setError("Terjadi kesalahan sistem saat menghubungi AI.");
+            setError("A system error occurred while contacting AI.");
         } finally {
             setIsAnalyzing(false);
         }
@@ -98,8 +98,8 @@ export default function TeacherJournalsPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Log Jurnal Siswa</h1>
-                        <p className="text-sm text-gray-500 mt-1">Pantau aktivitas dan perasaan siswa melalui jurnal harian mereka.</p>
+                        <h1 className="text-2xl font-bold text-gray-900">Student Journal Log</h1>
+                        <p className="text-sm text-gray-500 mt-1">Monitor student activities and feelings through their daily journals.</p>
                     </div>
 
                     <div className="flex gap-2">
@@ -107,7 +107,7 @@ export default function TeacherJournalsPage() {
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="Cari siswa..."
+                                placeholder="Search student..."
                                 className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 w-full md:w-64"
                             />
                         </div>
@@ -128,7 +128,7 @@ export default function TeacherJournalsPage() {
                                     <div className="flex items-center justify-between mb-2">
                                         <h3 className="text-base font-semibold text-gray-900">{journal.studentName}</h3>
                                         <span className="text-xs text-gray-400 whitespace-nowrap">
-                                            {formatDistanceToNow(journal.createdAt, { addSuffix: true, locale: id })}
+                                            {formatDistanceToNow(journal.createdAt, { addSuffix: true, locale: enUS })}
                                         </span>
                                     </div>
 
@@ -152,7 +152,7 @@ export default function TeacherJournalsPage() {
                                             onClick={() => setSelectedJournal(journal)}
                                             className="text-sm text-teal-600 font-medium hover:text-teal-700 flex items-center gap-1 transition-colors"
                                         >
-                                            <BookOpen className="w-4 h-4" /> Baca Selengkapnya
+                                            <BookOpen className="w-4 h-4" /> Read More
                                         </button>
                                     </div>
                                 </div>
@@ -186,7 +186,7 @@ export default function TeacherJournalsPage() {
                                 <div>
                                     <h2 className="text-xl font-bold text-gray-900">{selectedJournal.studentName}</h2>
                                     <p className="text-sm text-gray-500">
-                                        {formatDistanceToNow(selectedJournal.createdAt, { addSuffix: true, locale: id })} • {selectedJournal.mood}
+                                        {formatDistanceToNow(selectedJournal.createdAt, { addSuffix: true, locale: enUS })} • {selectedJournal.mood}
                                     </p>
                                 </div>
                             </div>
@@ -211,7 +211,7 @@ export default function TeacherJournalsPage() {
                                             className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-indigo-200"
                                         >
                                             <Brain className="w-4 h-4" />
-                                            Analisis Sekarang
+                                            Analyze Now
                                         </button>
                                     )}
                                 </div>
@@ -219,7 +219,7 @@ export default function TeacherJournalsPage() {
                                 {isAnalyzing && (
                                     <div className="flex flex-col items-center justify-center py-8 text-indigo-600 bg-indigo-50/50 rounded-xl border border-indigo-100/50 animate-pulse">
                                         <Brain className="w-8 h-8 mb-3 animate-bounce" />
-                                        <p className="text-sm font-medium">Sedang menganalisis emosi dan konten...</p>
+                                        <p className="text-sm font-medium">Analyzing emotions and content...</p>
                                     </div>
                                 )}
 
@@ -234,11 +234,11 @@ export default function TeacherJournalsPage() {
                                     <div className="bg-indigo-50 rounded-2xl p-6 border border-indigo-100 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                                             <div className="bg-white p-4 rounded-xl border border-indigo-100 shadow-sm">
-                                                <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">Emosi Dominan</p>
+                                                <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">Dominant Emotion</p>
                                                 <p className="text-lg font-bold text-indigo-900">{analysis.emotion}</p>
                                             </div>
                                             <div className="bg-white p-4 rounded-xl border border-indigo-100 shadow-sm">
-                                                <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">Tingkat Risiko</p>
+                                                <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">Risk Level</p>
                                                 <div className="flex items-center gap-2">
                                                     {analysis.riskLevel === 'High' ? (
                                                         <AlertTriangle className="w-5 h-5 text-red-500" />
@@ -257,7 +257,7 @@ export default function TeacherJournalsPage() {
                                         </div>
 
                                         <div className="mb-4">
-                                            <p className="text-sm font-bold text-indigo-900 mb-2">Ringkasan Psikologis</p>
+                                            <p className="text-sm font-bold text-indigo-900 mb-2">Psychological Summary</p>
                                             <p className="text-sm text-indigo-800 leading-relaxed bg-white/50 p-3 rounded-lg border border-indigo-100/50">
                                                 {analysis.summary}
                                             </p>
@@ -265,7 +265,7 @@ export default function TeacherJournalsPage() {
 
                                         {analysis.suggestions && analysis.suggestions.length > 0 && (
                                             <div>
-                                                <p className="text-sm font-bold text-indigo-900 mb-2">Saran Pendekatan</p>
+                                                <p className="text-sm font-bold text-indigo-900 mb-2">Suggested Approach</p>
                                                 <ul className="space-y-2">
                                                     {analysis.suggestions.map((suggestion, idx) => (
                                                         <li key={idx} className="flex items-start gap-2 text-sm text-indigo-800">

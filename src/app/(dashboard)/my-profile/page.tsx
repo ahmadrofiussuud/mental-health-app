@@ -18,7 +18,7 @@ export default function ProfilePage() {
     if (!session) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-500">
-                <p>Anda belum login.</p>
+                <p>You are not logged in.</p>
             </div>
         );
     }
@@ -33,8 +33,8 @@ export default function ProfilePage() {
             <div className="max-w-3xl mx-auto space-y-8">
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-3xl font-black text-slate-900 tracking-tight">Profil Saya</h1>
-                    <p className="text-slate-500 mt-2">Kelola informasi akun dan preferensi Anda.</p>
+                    <h1 className="text-3xl font-black text-slate-900 tracking-tight">My Profile</h1>
+                    <p className="text-slate-500 mt-2">Manage your account information and preferences.</p>
                 </div>
 
                 {/* Profile Card */}
@@ -98,9 +98,9 @@ export default function ProfilePage() {
                                     <Shield className="w-5 h-5" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-medium text-slate-500">Hak Akses</p>
+                                    <p className="text-sm font-medium text-slate-500">Access Level</p>
                                     <p className="text-base font-semibold text-slate-800">
-                                        {user.role === "TEACHER" ? "Akses Penuh Guru (Dashboard & Jurnal)" : "Akses Siswa (Jurnal & Mood)"}
+                                        {user.role === "TEACHER" ? "Full Teacher Access (Dashboard & Journals)" : "Student Access (Journals & Mood)"}
                                     </p>
                                 </div>
                             </div>

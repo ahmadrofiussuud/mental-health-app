@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import { id } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import {
     Book,
     Send,
@@ -24,11 +24,11 @@ interface Journal {
 }
 
 const moodOptions = [
-    { value: "HAPPY", label: "Senang", emoji: "😄", color: "bg-green-100 text-green-600 border-green-200 hover:bg-green-200" },
-    { value: "CALM", label: "Tenang", emoji: "😌", color: "bg-teal-100 text-teal-600 border-teal-200 hover:bg-teal-200" },
-    { value: "NEUTRAL", label: "Biasa", emoji: "😐", color: "bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200" },
-    { value: "SAD", label: "Sedih", emoji: "😢", color: "bg-blue-100 text-blue-600 border-blue-200 hover:bg-blue-200" },
-    { value: "ANGRY", label: "Marah", emoji: "😠", color: "bg-red-100 text-red-600 border-red-200 hover:bg-red-200" },
+    { value: "HAPPY", label: "Happy", emoji: "😄", color: "bg-green-100 text-green-600 border-green-200 hover:bg-green-200" },
+    { value: "CALM", label: "Calm", emoji: "😌", color: "bg-teal-100 text-teal-600 border-teal-200 hover:bg-teal-200" },
+    { value: "NEUTRAL", label: "Neutral", emoji: "😐", color: "bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200" },
+    { value: "SAD", label: "Sad", emoji: "😢", color: "bg-blue-100 text-blue-600 border-blue-200 hover:bg-blue-200" },
+    { value: "ANGRY", label: "Angry", emoji: "😠", color: "bg-red-100 text-red-600 border-red-200 hover:bg-red-200" },
 ];
 
 export default function StudentJournalsPage() {
@@ -97,10 +97,10 @@ export default function StudentJournalsPage() {
                         </div>
                     </div>
                     <h1 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">
-                        Ruang Cerita & Refleksi
+                        Stories & Reflections
                     </h1>
                     <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                        Tuliskan apa yang kamu rasakan hari ini. Jurnalmu adalah tempat aman untuk mengekspresikan diri.
+                        Write what you feel today. Your journal is a safe place to express yourself.
                     </p>
                 </div>
             </div>
@@ -112,13 +112,13 @@ export default function StudentJournalsPage() {
                         <div className="bg-white rounded-[1.5rem] shadow-xl shadow-indigo-100/50 border border-slate-100 p-6 sticky top-24">
                             <div className="flex items-center gap-2 mb-6">
                                 <PenLine className="w-5 h-5 text-indigo-500" />
-                                <h2 className="font-bold text-slate-800">Tulis Jurnal</h2>
+                                <h2 className="font-bold text-slate-800">Write Journal</h2>
                             </div>
 
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 <div>
                                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-                                        Mood Kamu
+                                        Your Mood
                                     </label>
                                     <div className="grid grid-cols-5 gap-2">
                                         {moodOptions.map((option) => (
@@ -143,12 +143,12 @@ export default function StudentJournalsPage() {
 
                                 <div>
                                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-                                        Judul
+                                        Title
                                     </label>
                                     <input
                                         type="text"
                                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
-                                        placeholder="Contoh: Hari yang melelahkan..."
+                                        placeholder="e.g. A tiring day..."
                                         value={formData.title}
                                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                         required
@@ -157,11 +157,11 @@ export default function StudentJournalsPage() {
 
                                 <div>
                                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-                                        Ceritamu
+                                        Your Story
                                     </label>
                                     <textarea
                                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 min-h-[120px] resize-none"
-                                        placeholder="Tumpahkan perasaanmu di sini..."
+                                        placeholder="Pour out your feelings here..."
                                         value={formData.content}
                                         onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                         required
@@ -181,7 +181,7 @@ export default function StudentJournalsPage() {
                                             className="hidden"
                                         />
                                         <span className={`text-xs font-medium transition-colors ${formData.isAnonymous ? "text-indigo-600" : "text-slate-500 group-hover:text-slate-700"}`}>
-                                            Post Anonim
+                                            Post Anonymously
                                         </span>
                                     </label>
                                 </div>
@@ -194,7 +194,7 @@ export default function StudentJournalsPage() {
                                     {submitting ? (
                                         <>
                                             <Loader2 className="w-4 h-4 animate-spin" />
-                                            Menyimpan...
+                                            Saving...
                                         </>
                                     ) : (
                                         <>
@@ -212,26 +212,26 @@ export default function StudentJournalsPage() {
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="font-bold text-slate-800 flex items-center gap-2">
                                 <Calendar className="w-5 h-5 text-indigo-500" />
-                                Riwayat Jurnal
+                                Journal History
                             </h2>
                             <span className="text-xs font-medium text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-100 shadow-sm">
-                                {journals.length} Entri
+                                {journals.length} Entries
                             </span>
                         </div>
 
                         {loading ? (
                             <div className="flex flex-col items-center justify-center py-12 text-slate-400">
                                 <Loader2 className="w-8 h-8 animate-spin mb-3" />
-                                <p className="text-sm">Memuat jurnal...</p>
+                                <p className="text-sm">Loading journals...</p>
                             </div>
                         ) : journals.length === 0 ? (
                             <div className="bg-white rounded-3xl p-12 text-center border border-dashed border-slate-200">
                                 <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
                                     📝
                                 </div>
-                                <h3 className="text-lg font-bold text-slate-900 mb-2">Belum ada jurnal</h3>
+                                <h3 className="text-lg font-bold text-slate-900 mb-2">No journals yet</h3>
                                 <p className="text-slate-500 text-sm max-w-xs mx-auto">
-                                    Mulai tulis pengalamann dan perasaanmu hari ini di kolom sebelah kiri.
+                                    Start writing your experiences and feelings in the form on the left.
                                 </p>
                             </div>
                         ) : (
@@ -253,10 +253,10 @@ export default function StudentJournalsPage() {
                                                         {journal.title}
                                                     </h3>
                                                     <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
-                                                        {formatDistanceToNow(new Date(journal.createdAt), { addSuffix: true, locale: id })}
+                                                        {formatDistanceToNow(new Date(journal.createdAt), { addSuffix: true, locale: enUS })}
                                                         {journal.isAnonymous && (
                                                             <span className="flex items-center gap-1 ml-2 text-indigo-400 bg-indigo-50 px-1.5 py-0.5 rounded-full">
-                                                                <Lock className="w-3 h-3" /> Anonim
+                                                                <Lock className="w-3 h-3" /> Anonymous
                                                             </span>
                                                         )}
                                                     </p>

@@ -38,13 +38,13 @@ export function TopNavigation() {
         if (userRole === "teacher" || userRole === "TEACHER") {
             return [
                 {
-                    name: "Dashboard Ringkasan",
+                    name: "Dashboard Overview",
                     href: "/teacher/dashboard",
                     icon: LayoutDashboard,
                     active: isActive("/teacher/dashboard"),
                 },
                 {
-                    name: "Log Jurnal Siswa",
+                    name: "Student Journals",
                     href: "/teacher/journals",
                     icon: NotebookPen,
                     active: isActive("/teacher/journals"),

@@ -26,7 +26,7 @@ export default function LoginPage() {
         });
 
         if (res?.error) {
-            setError("Email atau password salah. Coba lagi.");
+            setError("Invalid email or password. Please try again.");
             setIsLoading(false);
         } else {
             const response = await fetch("/api/auth/session");
@@ -69,7 +69,7 @@ export default function LoginPage() {
                     </div>
                     <h1 className="text-4xl font-bold mb-4 text-center">SerenityHub</h1>
                     <p className="text-lg text-white/80 text-center max-w-md leading-relaxed">
-                        Platform kesehatan mental siswa berbasis AI. Ruang aman untuk pertumbuhan emosi dan konseling digital.
+                        AI-powered student mental health platform. A safe space for emotional growth and digital counseling.
                     </p>
 
                     {/* Feature highlights */}
@@ -79,7 +79,7 @@ export default function LoginPage() {
                                 <span className="text-xl">🧠</span>
                             </div>
                             <div>
-                                <p className="font-semibold text-sm">Analisis AI</p>
+                                <p className="font-semibold text-sm">AI Analysis</p>
                                 <p className="text-xs text-white/70">Powered by Google Gemini</p>
                             </div>
                         </div>
@@ -88,8 +88,8 @@ export default function LoginPage() {
                                 <span className="text-xl">📔</span>
                             </div>
                             <div>
-                                <p className="font-semibold text-sm">Jurnal Harian</p>
-                                <p className="text-xs text-white/70">Catat dan pantau suasana hati</p>
+                                <p className="font-semibold text-sm">Daily Journal</p>
+                                <p className="text-xs text-white/70">Track and monitor your mood</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
@@ -97,8 +97,8 @@ export default function LoginPage() {
                                 <span className="text-xl">🤝</span>
                             </div>
                             <div>
-                                <p className="font-semibold text-sm">Koneksi Guru BK</p>
-                                <p className="text-xs text-white/70">Monitoring real-time oleh guru</p>
+                                <p className="font-semibold text-sm">Counselor Connection</p>
+                                <p className="text-xs text-white/70">Real-time monitoring by teachers</p>
                             </div>
                         </div>
                     </div>
@@ -125,8 +125,8 @@ export default function LoginPage() {
                 <div className="w-full max-w-md">
                     <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-8">
                         <div className="text-center mb-8">
-                            <h2 className="text-2xl font-bold text-gray-800">Selamat Datang 👋</h2>
-                            <p className="text-gray-500 mt-2 text-sm">Masuk ke akun Anda untuk melanjutkan</p>
+                            <h2 className="text-2xl font-bold text-gray-800">Welcome Back 👋</h2>
+                            <p className="text-gray-500 mt-2 text-sm">Sign in to your account to continue</p>
                         </div>
 
                         {error && (
@@ -145,7 +145,7 @@ export default function LoginPage() {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="nama@email.com"
+                                    placeholder="name@email.com"
                                     className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-teal-400 focus:ring-2 focus:ring-teal-100 outline-none transition-all text-sm"
                                     required
                                 />
@@ -178,10 +178,10 @@ export default function LoginPage() {
                                 {isLoading ? (
                                     <>
                                         <Loader2 className="w-5 h-5 animate-spin" />
-                                        Memproses...
+                                        Processing...
                                     </>
                                 ) : (
-                                    "Masuk"
+                                    "Sign In"
                                 )}
                             </button>
                         </form>
@@ -190,7 +190,7 @@ export default function LoginPage() {
                     {/* Demo Credentials Hint */}
                     <div className="mt-6 bg-white rounded-2xl shadow-lg shadow-gray-200/50 border border-gray-100 p-5">
                         <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 text-center">
-                            🔑 Demo Akses Cepat
+                            🔑 Quick Demo Access
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <button
@@ -201,7 +201,7 @@ export default function LoginPage() {
                                     <GraduationCap className="w-5 h-5" />
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-sm font-semibold text-gray-700">Siswa</p>
+                                    <p className="text-sm font-semibold text-gray-700">Student</p>
                                     <p className="text-[11px] text-gray-400">student@example.com</p>
                                 </div>
                             </button>
@@ -213,7 +213,7 @@ export default function LoginPage() {
                                     <BookOpen className="w-5 h-5" />
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-sm font-semibold text-gray-700">Guru BK</p>
+                                    <p className="text-sm font-semibold text-gray-700">Counselor</p>
                                     <p className="text-[11px] text-gray-400">teacher@example.com</p>
                                 </div>
                             </button>

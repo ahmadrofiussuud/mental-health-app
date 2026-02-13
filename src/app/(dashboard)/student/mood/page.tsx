@@ -41,7 +41,7 @@ export default function MoodPage() {
         <div className="max-w-2xl mx-auto space-y-8">
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-center">Bagaimana perasaanmu saat ini?</CardTitle>
+                    <CardTitle className="text-center">How are you feeling right now?</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -60,7 +60,7 @@ export default function MoodPage() {
             </Card>
 
             <div className="space-y-4">
-                <h3 className="text-lg font-bold">Riwayat Mood</h3>
+                <h3 className="text-lg font-bold">Mood History</h3>
                 <div className="space-y-2">
                     {moods.map((log) => (
                         <div key={log.id} className="flex justify-between items-center p-3 bg-white rounded shadow-sm border">

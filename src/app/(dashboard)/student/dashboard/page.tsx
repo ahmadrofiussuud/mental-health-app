@@ -14,9 +14,9 @@ async function getStudentStats(userId: string) {
 }
 
 const DAILY_QUOTES = [
-    { emoji: "🌟", title: "Percaya Diri", quote: "Kekuatan terbesar bukan pada tidak pernah jatuh, tapi bangkit setiap kali kita jatuh." },
-    { emoji: "🌱", title: "Bertumbuh", quote: "Setiap langkah kecil yang kamu ambil hari ini membawa perubahan besar di masa depan." },
-    { emoji: "💪", title: "Kuat", quote: "Kamu lebih kuat dari yang kamu pikirkan. Teruslah melangkah." },
+    { emoji: "🌟", title: "Confidence", quote: "The greatest strength is not in never falling, but in rising every time we fall." },
+    { emoji: "🌱", title: "Growth", quote: "Every small step you take today brings a big change in the future." },
+    { emoji: "💪", title: "Strength", quote: "You are stronger than you think. Keep moving forward." },
 ];
 
 export default async function StudentDashboard() {
@@ -46,10 +46,10 @@ export default async function StudentDashboard() {
                         </div>
 
                         <h1 className="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight">
-                            Halo, {session.user.name}! 👋
+                            Hello, {session.user.name}! 👋
                         </h1>
                         <p className="text-white/80 text-sm sm:text-base max-w-md mb-6 leading-relaxed">
-                            Apa kabar hari ini? Yuk cek mood kamu dan tulis jurnal untuk memantau kesehatan mentalmu.
+                            How are you today? Check your mood and write a journal to monitor your mental health.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3">
@@ -57,13 +57,13 @@ export default async function StudentDashboard() {
                                 href="/student/mood"
                                 className="inline-flex justify-center items-center gap-2 bg-white text-teal-700 px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-black/10 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 active:scale-95"
                             >
-                                😊 Cek Mood
+                                😊 Check Mood
                             </Link>
                             <Link
                                 href="/student/journals"
                                 className="inline-flex justify-center items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/30 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-white/25 transition-all duration-200 active:scale-95"
                             >
-                                📝 Tulis Jurnal
+                                📝 Write Journal
                             </Link>
                         </div>
                     </div>
@@ -73,7 +73,7 @@ export default async function StudentDashboard() {
                 <div>
                     <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                         <span className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 text-sm">📊</span>
-                        Perjalananmu
+                        Your Journey
                     </h2>
                     <div className="grid grid-cols-2 gap-4">
                         {/* Streak Card */}
@@ -83,17 +83,17 @@ export default async function StudentDashboard() {
                                 <span className="bg-white/20 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Streak</span>
                             </div>
                             <h3 className="text-4xl sm:text-5xl font-black leading-none mb-1">{stats.streak}</h3>
-                            <p className="text-orange-100 text-xs sm:text-sm font-medium">Hari berturut-turut</p>
+                            <p className="text-orange-100 text-xs sm:text-sm font-medium">Days in a row</p>
                         </div>
 
                         {/* Entries Card */}
                         <div className="bg-gradient-to-br from-violet-500 to-violet-600 rounded-2xl p-5 sm:p-6 text-white shadow-lg shadow-violet-200/50">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl sm:text-2xl">✍️</div>
-                                <span className="bg-white/20 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Jurnal</span>
+                                <span className="bg-white/20 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Journal</span>
                             </div>
                             <h3 className="text-4xl sm:text-5xl font-black leading-none mb-1">{stats.totalEntries}</h3>
-                            <p className="text-violet-100 text-xs sm:text-sm font-medium">Total ditulis</p>
+                            <p className="text-violet-100 text-xs sm:text-sm font-medium">Total written</p>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ export default async function StudentDashboard() {
                 <div>
                     <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                         <span className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 text-sm">💡</span>
-                        Kata Bijak Hari Ini
+                        Daily Wisdom
                     </h2>
                     <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 sm:p-8 shadow-md border border-amber-100/50 text-center">
                         <div className="w-14 h-14 bg-white rounded-2xl shadow-md flex items-center justify-center text-3xl mx-auto mb-4">{wisdom.emoji}</div>
@@ -115,18 +115,18 @@ export default async function StudentDashboard() {
                 <div>
                     <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                         <span className="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center text-teal-600 text-sm">⚡</span>
-                        Akses Cepat
+                        Quick Access
                     </h2>
                     <div className="grid grid-cols-2 gap-4">
                         <Link href="/student/mood" className="group bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:border-teal-200 transition-all duration-200">
                             <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">😊</div>
                             <h4 className="font-bold text-gray-800 text-sm mb-1">Mood Check</h4>
-                            <p className="text-gray-400 text-xs">Catat suasana hatimu</p>
+                            <p className="text-gray-400 text-xs">Record how you feel</p>
                         </Link>
                         <Link href="/student/journals" className="group bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
                             <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">📓</div>
-                            <h4 className="font-bold text-gray-800 text-sm mb-1">Jurnal</h4>
-                            <p className="text-gray-400 text-xs">Tulis cerita harimu</p>
+                            <h4 className="font-bold text-gray-800 text-sm mb-1">Journal</h4>
+                            <p className="text-gray-400 text-xs">Write your daily story</p>
                         </Link>
                     </div>
                 </div>

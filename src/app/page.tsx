@@ -59,7 +59,7 @@ export default async function Home() {
                   href="/login"
                   className="px-5 py-2.5 text-sm font-medium text-gray-200 hover:text-white transition duration-300"
                 >
-                  Masuk
+                  Login
                 </Link>
                 {/* Register link removed as per typical enterprise app flow, or can be added back if public reg is allowed */}
               </>
@@ -74,21 +74,21 @@ export default async function Home() {
           <div className="inline-flex items-center px-3 py-1 rounded-full border border-teal-400/30 bg-teal-900/30 backdrop-blur-md mb-6">
             <span className="flex h-2 w-2 rounded-full bg-teal-400 mr-2 animate-pulse"></span>
             <span className="text-xs font-medium text-teal-100 uppercase tracking-wider">
-              Kesehatan Mental Siswa Prioritas Kami
+              Student Mental Health Is Our Priority
             </span>
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 drop-shadow-sm">
-            Ruang Aman untuk <br />
+            A Safe Space for <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-              Pertumbuhan Mental
+              Mental Growth
             </span>
           </h1>
 
           <p className="text-lg md:text-xl text-gray-200 mb-10 leading-relaxed max-w-lg">
-            SerenityHub membantu Anda memahami emosi dan menyediakan saluran aman
-            untuk berkomunikasi dengan guru BK Anda. Anda tidak sendirian dalam
-            perjalanan ini.
+            SerenityHub helps you understand your emotions and provides a safe
+            channel to communicate with your school counselor. You are not alone
+            in this journey.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -97,7 +97,7 @@ export default async function Home() {
               className="group relative px-8 py-4 bg-teal-600 text-white font-semibold rounded-xl shadow-lg shadow-teal-500/40 hover:bg-teal-700 transition-all duration-300 hover:-translate-y-1 overflow-hidden"
             >
               <div className="relative z-10 flex items-center justify-center gap-2">
-                <span>Mulai Check-in Harian</span>
+                <span>Start Daily Check-in</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 transition-transform group-hover:translate-x-1"
@@ -117,7 +117,7 @@ export default async function Home() {
               href="#"
               className="px-8 py-4 bg-white/10 text-white font-medium rounded-xl border border-white/20 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 flex items-center justify-center hover:border-white/40"
             >
-              Pelajari Panduan
+              Learn More
             </Link>
           </div>
 
@@ -125,15 +125,15 @@ export default async function Home() {
           <div className="mt-12 flex items-center gap-8 border-t border-white/10 pt-8">
             <div>
               <p className="text-3xl font-bold text-white">500+</p>
-              <p className="text-sm text-gray-400">Siswa Terbantu</p>
+              <p className="text-sm text-gray-400">Students Helped</p>
             </div>
             <div>
               <p className="text-3xl font-bold text-white">24/7</p>
-              <p className="text-sm text-gray-400">Akses Konseling</p>
+              <p className="text-sm text-gray-400">Counseling Access</p>
             </div>
             <div>
               <p className="text-3xl font-bold text-white">100%</p>
-              <p className="text-sm text-gray-400">Privasi Terjaga</p>
+              <p className="text-sm text-gray-400">Privacy Guaranteed</p>
             </div>
           </div>
         </div>
