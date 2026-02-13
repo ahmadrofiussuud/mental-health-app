@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "@/components/ui/Logo";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -26,14 +27,7 @@ export default async function Home() {
           <div className="flex items-center gap-2">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 relative">
-                <Image
-                  src="/images/serenity-hub-logo.png"
-                  alt="SerenityHub"
-                  fill
-                  className="object-contain brightness-0 invert"
-                />
-              </div>
+              <Logo size={40} variant="white" />
               <h1 className="text-2xl font-bold text-white tracking-wide">
                 SerenityHub
               </h1>

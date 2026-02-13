@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import Logo from "@/components/ui/Logo";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
@@ -83,14 +83,7 @@ export function TopNavigation() {
                     <div className="flex items-center">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-                            <div className="w-9 h-9 relative">
-                                <Image
-                                    src="/images/serenity-hub-logo.png"
-                                    alt="SerenityHub"
-                                    fill
-                                    className="object-contain"
-                                />
-                            </div>
+                            <Logo size={36} variant="color" />
                             <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent tracking-wide">
                                 SerenityHub
                             </span>

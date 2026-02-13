@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Logo from "@/components/ui/Logo";
 import { Eye, EyeOff, GraduationCap, BookOpen, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
@@ -59,13 +60,8 @@ export default function LoginPage() {
                 <div className="absolute -bottom-20 left-1/4 w-72 h-72 bg-teal-300/20 rounded-full blur-3xl"></div>
 
                 <div className="relative z-10 flex flex-col items-center justify-center w-full px-16 text-white">
-                    <div className="w-32 h-32 mb-8 relative">
-                        <Image
-                            src="/images/serenity-hub-logo.png"
-                            alt="SerenityHub Logo"
-                            fill
-                            className="object-contain drop-shadow-2xl brightness-0 invert"
-                        />
+                    <div className="w-32 h-32 mb-8">
+                        <Logo size={128} variant="white" />
                     </div>
                     <h1 className="text-4xl font-bold mb-4 text-center">SerenityHub</h1>
                     <p className="text-lg text-white/80 text-center max-w-md leading-relaxed">
@@ -109,13 +105,8 @@ export default function LoginPage() {
             <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 bg-gray-50">
                 {/* Mobile Logo */}
                 <div className="lg:hidden flex flex-col items-center mb-8">
-                    <div className="w-20 h-20 relative mb-3">
-                        <Image
-                            src="/images/serenity-hub-logo.png"
-                            alt="SerenityHub Logo"
-                            fill
-                            className="object-contain"
-                        />
+                    <div className="w-20 h-20 mb-3">
+                        <Logo size={80} variant="color" />
                     </div>
                     <h1 className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-indigo-600 bg-clip-text text-transparent">
                         SerenityHub
