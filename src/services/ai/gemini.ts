@@ -4,17 +4,21 @@ import { redis } from "@/lib/redis";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
-// Rate Limit: 10 requests per 60s per user
-const ratelimit = new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(10, "60 s"),
-});
+// Rate Limit: 10 requests per 60s per user (Only if Redis is available)
+const ratelimit = redis
+    ? new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(10, "60 s"),
+    })
+    : null;
 
 export async function generateAIResponse(prompt: string, userId: string) {
-    // 1. Check Rate Limit
-    const { success } = await ratelimit.limit(userId);
-    if (!success) {
-        throw new Error("RATE_LIMIT_EXCEEDED");
+    // 1. Check Rate Limit (if available)
+    if (ratelimit) {
+        const { success } = await ratelimit.limit(userId);
+        if (!success) {
+            throw new Error("RATE_LIMIT_EXCEEDED");
+        }
     }
 
     // 2. Call Gemini
