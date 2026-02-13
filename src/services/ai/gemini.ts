@@ -1,25 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { Ratelimit } from "@upstash/ratelimit";
-import { redis } from "@/lib/redis";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
-// Rate Limit: 10 requests per 60s per user (Only if Redis is available)
-const ratelimit = redis
-    ? new Ratelimit({
-        redis,
-        limiter: Ratelimit.slidingWindow(10, "60 s"),
-    })
-    : null;
-
 export async function generateAIResponse(prompt: string, userId: string) {
-    // 1. Check Rate Limit (if available)
-    if (ratelimit) {
-        const { success } = await ratelimit.limit(userId);
-        if (!success) {
-            throw new Error("RATE_LIMIT_EXCEEDED");
-        }
-    }
+    // Rate Link removed for database-less pivot
+
 
     // 2. Call Gemini
     try {

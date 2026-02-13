@@ -1,12 +1,10 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { db } from "@/lib/db";
-import { compare } from "bcryptjs";
+import { MOCK_USERS } from "@/lib/mock-data";
+import { compare } from "bcryptjs"; // Optional: keep if we want to simulate hash check, or remove
 
 export const authOptions: NextAuthOptions = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    adapter: PrismaAdapter(db) as any, // Type assertion for compatibility
+    // Adapter removed for mock mode
     session: { strategy: "jwt" },
     pages: { signIn: "/login" },
     providers: [
@@ -19,11 +17,28 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) return null;
 
-                const user = await db.user.findUnique({ where: { email: credentials.email } });
-                if (!user || !user.password) return null;
+                // MOCK AUTH LOGIC
+                const user = MOCK_USERS.find(u => u.email === credentials.email);
 
-                const isValid = await compare(credentials.password, user.password);
-                if (!isValid) return null;
+                // For simplicity in mock mode, we accept "password" or skip hash check
+                // In production, we would use: const isValid = await compare(credentials.password, user.password);
+
+                if (!user) return null;
+
+                // Allow specific password "password" or just bypass for admin/admin convenience if requested
+                // User said: "simple credential provider that accepts any login (e.g., admin/admin)"
+                // Let's create a generic admin if not found in mock data
+
+                if (credentials.email === "admin" && credentials.password === "admin") {
+                    return {
+                        id: "admin-1",
+                        name: "Super Admin",
+                        email: "admin@example.com",
+                        role: "ADMIN"
+                    };
+                }
+
+                if (user.password !== credentials.password) return null;
 
                 return {
                     id: user.id,
