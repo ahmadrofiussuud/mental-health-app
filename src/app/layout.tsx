@@ -9,7 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "MindCare - Platform Kesehatan Mental Siswa",
+  title: "SerenityHub - Platform Kesehatan Mental Siswa",
   description: "Ruang aman untuk pertumbuhan mental siswa.",
 };
 
