@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,7 +12,7 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from "recharts";
-import { AlertCircle, Brain, Sparkles, TrendingUp } from "lucide-react";
+import { Brain, Sparkles, TrendingUp } from "lucide-react";
 import { getTeacherDashboardSummary } from "@/actions/teacher";
 
 // Mock data for MVP - In real app, fetch from API
@@ -28,7 +27,7 @@ const moodData = [
 ];
 
 export default function TeacherDashboard() {
-    const { data: session } = useSession();
+    // const { data: session } = useSession();
     const [mounted, setMounted] = useState(false);
     const [summary, setSummary] = useState<string>("");
     const [loadingSummary, setLoadingSummary] = useState(true);
@@ -194,7 +193,7 @@ export default function TeacherDashboard() {
                                 </div>
                             ) : (
                                 <p className="text-indigo-100 leading-relaxed text-sm">
-                                    "{summary}"
+                                    &quot;{summary}&quot;
                                 </p>
                             )}
                         </div>

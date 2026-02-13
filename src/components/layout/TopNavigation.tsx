@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, User, LogOut, LayoutDashboard, NotebookPen, Smile, Activity, FileText } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut, LayoutDashboard, NotebookPen, Smile, FileText } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,7 +13,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+
 
 export function TopNavigation() {
     const { data: session } = useSession();

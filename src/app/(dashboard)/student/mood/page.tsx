@@ -4,9 +4,15 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 
+interface MoodLog {
+    id: string;
+    mood: string;
+    createdAt: string;
+}
+
 export default function MoodPage() {
     const router = useRouter();
-    const [moods, setMoods] = useState<any[]>([]);
+    const [moods, setMoods] = useState<MoodLog[]>([]);
 
     useEffect(() => {
         fetch("/api/mood").then(res => res.json()).then(setMoods);

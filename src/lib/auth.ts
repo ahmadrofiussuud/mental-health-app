@@ -1,10 +1,11 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { db } from "@/lib/db";
 import { compare } from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     adapter: PrismaAdapter(db) as any, // Type assertion for compatibility
     session: { strategy: "jwt" },
     pages: { signIn: "/login" },

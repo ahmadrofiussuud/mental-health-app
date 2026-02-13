@@ -6,14 +6,9 @@ import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import {
     Book,
-    Smile,
-    Meh,
-    Frown,
-    Shield,
     Send,
     Loader2,
     Lock,
-    Globe,
     PenLine,
     Calendar,
     Sparkles
@@ -132,8 +127,8 @@ export default function StudentJournalsPage() {
                                                 type="button"
                                                 onClick={() => setFormData({ ...formData, mood: option.value })}
                                                 className={`aspect-square rounded-xl flex items-center justify-center text-xl transition-all duration-200 ${formData.mood === option.value
-                                                        ? `${option.color} ring-2 ring-offset-2 ring-indigo-500 shadow-md scale-110`
-                                                        : "bg-slate-50 text-slate-400 hover:bg-slate-100 grayscale hover:grayscale-0"
+                                                    ? `${option.color} ring-2 ring-offset-2 ring-indigo-500 shadow-md scale-110`
+                                                    : "bg-slate-50 text-slate-400 hover:bg-slate-100 grayscale hover:grayscale-0"
                                                     }`}
                                                 title={option.label}
                                             >

@@ -38,6 +38,7 @@ export async function getTeacherDashboardSummary() {
         // 2. Format data for the prompt
         const logSummary = logs
             .map(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (log: any) =>
                     `- ${log.user.name}: ${log.mood} (${log.note || "No note"})`
             )
@@ -97,7 +98,7 @@ export async function analyzeJournalContent(content: string) {
         // Try to parse JSON
         try {
             return JSON.parse(text);
-        } catch (e) {
+        } catch {
             console.error("JSON Parse Error. Raw text:", text);
             // Fallback: simple regex extraction if JSON fails
             return {
@@ -107,11 +108,11 @@ export async function analyzeJournalContent(content: string) {
                 suggestions: []
             };
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error analyzing journal:", error);
         return {
             error: true,
-            message: error.message || "Terjadi kesalahan saat menghubungi AI."
+            message: (error as Error).message || "Terjadi kesalahan saat menghubungi AI."
         };
     }
 }

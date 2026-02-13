@@ -1,8 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import { Search, Filter, BookOpen, X, Sparkles, Brain, AlertTriangle, CheckCircle } from "lucide-react";
@@ -47,7 +45,7 @@ type AIAnalysis = {
 };
 
 export default function TeacherJournalsPage() {
-    const { data: session } = useSession();
+    // const { data: session } = useSession();
     const [mounted, setMounted] = useState(false);
     const [selectedJournal, setSelectedJournal] = useState<typeof mockJournals[0] | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);

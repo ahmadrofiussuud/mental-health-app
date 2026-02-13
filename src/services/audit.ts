@@ -5,7 +5,7 @@ interface AuditParams {
     targetUserId?: string;
     action: string;
     resourceId?: string;
-    details?: any;
+    details?: Record<string, unknown>;
 }
 
 export async function logAudit(params: AuditParams) {
@@ -16,7 +16,8 @@ export async function logAudit(params: AuditParams) {
                 targetUserId: params.targetUserId,
                 action: params.action,
                 resourceId: params.resourceId,
-                details: params.details ?? {}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                details: (params.details ?? {}) as any
             }
         });
     } catch (e) {

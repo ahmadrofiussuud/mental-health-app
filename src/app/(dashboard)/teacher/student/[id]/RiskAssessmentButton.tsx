@@ -23,7 +23,7 @@ export default function RiskAssessmentButton({ studentId }: { studentId: string 
 
             alert("Analisis selesai!");
             router.refresh();
-        } catch (e) {
+        } catch {
             alert("Gagal menjalankan analisis.");
         } finally {
             setLoading(false);

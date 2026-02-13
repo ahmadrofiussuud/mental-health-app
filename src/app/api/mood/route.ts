@@ -29,12 +29,12 @@ export async function POST(req: Request) {
             },
         });
         return NextResponse.json(moodLog);
-    } catch (error) {
+    } catch {
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
 
-export async function GET(req: Request) {
+export async function GET() {
     const session = await getServerSession(authOptions);
     if (!session) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -45,7 +45,7 @@ export async function GET(req: Request) {
             take: 10
         });
         return NextResponse.json(logs);
-    } catch (error) {
+    } catch {
         return new NextResponse("Internal Error", { status: 500 });
     }
 }

@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     }
 }
 
-export async function GET(req: Request) {
+export async function GET() {
     const session = await getServerSession(authOptions);
     if (!session) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -51,7 +51,7 @@ export async function GET(req: Request) {
             orderBy: { createdAt: "desc" },
         });
         return NextResponse.json(journals);
-    } catch (error) {
+    } catch {
         return new NextResponse("Internal Error", { status: 500 });
     }
 }

@@ -35,11 +35,12 @@ export async function POST(req: Request) {
                 name,
                 email,
                 password: hashedPassword,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 role: role as any
             }
         });
         return NextResponse.json(user);
-    } catch (e) {
+    } catch {
         return NextResponse.json({ error: "Email already exists" }, { status: 409 });
     }
 }

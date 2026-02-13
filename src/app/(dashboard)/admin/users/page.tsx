@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { UserPlus } from "lucide-react";
+
 import CreateUserForm from "./CreateUserForm";
 
 export default async function AdminUsersPage() {
@@ -41,8 +41,8 @@ export default async function AdminUsersPage() {
                                                 <td className="p-3">{user.email}</td>
                                                 <td className="p-3">
                                                     <span className={`px-2 py-1 rounded text-xs font-bold ${user.role === 'ADMIN' ? 'bg-red-100 text-red-600' :
-                                                            user.role === 'TEACHER' ? 'bg-purple-100 text-purple-600' :
-                                                                'bg-blue-100 text-blue-600'
+                                                        user.role === 'TEACHER' ? 'bg-purple-100 text-purple-600' :
+                                                            'bg-blue-100 text-blue-600'
                                                         }`}>
                                                         {user.role}
                                                     </span>

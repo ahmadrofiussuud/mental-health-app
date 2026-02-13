@@ -32,7 +32,7 @@ export default function CreateUserForm() {
             setFormData({ name: "", email: "", password: "", role: "STUDENT" });
             router.refresh();
             alert("User created!");
-        } catch (e) {
+        } catch {
             alert("Error creating user");
         } finally {
             setLoading(false);

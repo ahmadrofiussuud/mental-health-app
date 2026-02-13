@@ -3,8 +3,7 @@ import { authOptions } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-import { formatDistanceToNow } from "date-fns";
-import { id } from "date-fns/locale";
+
 
 async function getStudentStats(userId: string) {
     const totalEntries = await prisma.journal.count({
@@ -88,7 +87,7 @@ export default async function StudentDashboard() {
                             </h1>
 
                             <p className="text-slate-600 font-medium text-sm md:text-base mb-6 leading-relaxed border-l-4 border-indigo-100 pl-4 py-1">
-                                "Setiap hari adalah awal yang baru. Teruslah belajar, berkembang, dan percaya pada dirimu sendiri!"
+                                &quot;Setiap hari adalah awal yang baru. Teruslah belajar, berkembang, dan percaya pada dirimu sendiri!&quot;
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-3">
@@ -160,7 +159,7 @@ export default async function StudentDashboard() {
                             <div className="relative z-10 w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center text-4xl mb-6 transform group-hover:-rotate-12 transition duration-300 ease-out">{wisdom.emoji}</div>
                             <div className="relative z-10 px-2">
                                 <h3 className="text-xl font-black text-slate-800 mb-2">{wisdom.title}</h3>
-                                <p className="text-slate-600 font-medium text-sm leading-relaxed">"{wisdom.quote}"</p>
+                                <p className="text-slate-600 font-medium text-sm leading-relaxed">&quot;{wisdom.quote}&quot;</p>
                             </div>
                         </div>
                     </div>
