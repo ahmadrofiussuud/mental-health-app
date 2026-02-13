@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { notFound } from "next/navigation";
 import RiskAssessmentButton from "./RiskAssessmentButton";
 
-export default async function StudentDetailPage({ params }: { params: { id: string } }) {
+export default async function StudentDetailPage(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     const session = await getServerSession(authOptions);
     if (!session) return null;
 
