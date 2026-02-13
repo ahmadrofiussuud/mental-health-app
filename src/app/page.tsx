@@ -26,22 +26,13 @@ export default async function Home() {
           <div className="flex items-center gap-2">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 bg-gradient-to-br from-teal-400 to-indigo-500 rounded-xl flex items-center justify-center text-white shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-6 h-6"
-                >
-                  <path d="M12 2.5a5.5 5.5 0 0 1 5 5.5c0 2.5-2.5 5.5-5 9.5-2.5-4-5-7-5-9.5a5.5 5.5 0 0 1 5-5.5z" />
-                  <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.5-3-4" />
-                  <path d="M12 22a7 7 0 0 1-7-7c0-2 1-3.5 3-4" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+              <div className="w-10 h-10 relative">
+                <Image
+                  src="/images/serenity-hub-logo.png"
+                  alt="SerenityHub"
+                  fill
+                  className="object-contain brightness-0 invert"
+                />
               </div>
               <h1 className="text-2xl font-bold text-white tracking-wide">
                 SerenityHub
