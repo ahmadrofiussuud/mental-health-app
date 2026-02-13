@@ -135,7 +135,7 @@ export function TopNavigation() {
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
-                                    <Link href="/profile" className="cursor-pointer flex items-center gap-2">
+                                    <Link href="/my-profile" className="cursor-pointer flex items-center gap-2">
                                         <User className="w-4 h-4" /> Profile
                                     </Link>
                                 </DropdownMenuItem>
@@ -206,7 +206,7 @@ export function TopNavigation() {
                         </div>
                         <div className="mt-3 space-y-1">
                             <Link
-                                href="/profile"
+                                href="/my-profile"
                                 className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
                                 onClick={() => setIsOpen(false)}
                             >
